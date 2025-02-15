@@ -1,6 +1,7 @@
 import Layout from "@/Layouts/Layout";
 import { formatDate, formattingPrice } from "@/utils";
 import { Head, useForm } from "@inertiajs/react";
+import { toast } from "sonner";
 
 export default function Create({ travelPackage }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -23,8 +24,19 @@ export default function Create({ travelPackage }) {
     // Handle submit form
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(data);
-        // post(route("bookings.store"));
+
+        const now = new Date().toLocaleDateString("en-CA");
+
+        if (!data.booking_date || !data.passenger_count || !data.payment_method)
+            return toast.warning("Pastikan semua data telah diisi");
+
+        if (data.booking_date < now) {
+            return toast.warning(
+                "Tanggal booking tidak boleh kurang dari hari ini"
+            );
+        }
+
+        post(route("booking.store"));
     };
 
     return (
@@ -106,7 +118,7 @@ export default function Create({ travelPackage }) {
                                                 travelPackage.available_capacity}{" "}
                                             / {travelPackage.capacity}
                                         </span>
-                                        <span className="text-sm font-medium text-gray-700">
+                                        <span className="text-sm font-medium text-green-600">
                                             Available:{" "}
                                             {travelPackage.available_capacity}
                                         </span>

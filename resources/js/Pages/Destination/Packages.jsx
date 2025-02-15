@@ -144,8 +144,12 @@ export default function Packages({ travelPackages }) {
                                         </div>
 
                                         {/* Dynamic Booking Button */}
-                                        <button
-                                            className={`w-full mt-4 py-2 rounded-md text-white font-semibold ${
+                                        <Link
+                                            href={route(
+                                                "booking.create",
+                                                pkg.slug
+                                            )}
+                                            className={`w-full block text-center mt-4 py-2 rounded-md text-white font-semibold ${
                                                 pkg.available_capacity > 0
                                                     ? "bg-blue-500 hover:bg-blue-600"
                                                     : "bg-gray-400 cursor-not-allowed"
@@ -157,7 +161,7 @@ export default function Packages({ travelPackages }) {
                                             {pkg.available_capacity > 0
                                                 ? "Book Now"
                                                 : "Fully Booked"}
-                                        </button>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

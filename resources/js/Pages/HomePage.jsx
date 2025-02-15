@@ -21,7 +21,8 @@ export default function HomePage({ destinations }) {
     ];
 
     const handleFindPackages = () => {
-        const now = new Date().toISOString().split("T")[0];
+        const now = new Date().toLocaleDateString("en-CA");
+
         setLoading(true);
 
         if (checkIn < now) {
