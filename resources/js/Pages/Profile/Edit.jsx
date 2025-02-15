@@ -1,39 +1,75 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import DeleteUserForm from './Partials/DeleteUserForm';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import Layout from "@/Layouts/Layout";
+import { Head } from "@inertiajs/react";
+import { useState } from "react";
+import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
+import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
 
 export default function Edit({ mustVerifyEmail, status }) {
-    return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Profile
-                </h2>
-            }
-        >
-            <Head title="Profile" />
+    const [activeTab, setActiveTab] = useState("profile");
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
+    const renderTabContent = () => {
+        switch (activeTab) {
+            case "profile":
+                return (
+                    <div className="p-6 bg-white rounded-lg shadow">
+                        <h2 className="mb-4 text-xl font-semibold">
+                            Update Profile Information
+                        </h2>
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
-                            className="max-w-xl"
+                            className="max-w-xl mx-auto"
                         />
                     </div>
+                );
+            case "password":
+                return (
+                    <div className="p-6 bg-white rounded-lg shadow">
+                        <h2 className="mb-4 text-xl font-semibold">
+                            Update Password
+                        </h2>
+                        <UpdatePasswordForm className="max-w-xl mx-auto" />
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <UpdatePasswordForm className="max-w-xl" />
+    return (
+        <Layout>
+            <Head title="Profile" />
+
+            <div className="px-4 py-12">
+                <div className="max-w-4xl mx-auto">
+                    {/* Tab Navigation */}
+                    <div className="flex flex-col mb-6 border-b border-gray-200 sm:flex-row">
+                        <button
+                            className={`py-2 px-4 text-center focus:outline-none ${
+                                activeTab === "profile"
+                                    ? "border-b-2 border-blue-500 text-blue-500"
+                                    : "text-gray-600 hover:text-blue-500"
+                            }`}
+                            onClick={() => setActiveTab("profile")}
+                        >
+                            Profile
+                        </button>
+                        <button
+                            className={`py-2 px-4 text-center focus:outline-none ${
+                                activeTab === "password"
+                                    ? "border-b-2 border-blue-500 text-blue-500"
+                                    : "text-gray-600 hover:text-blue-500"
+                            }`}
+                            onClick={() => setActiveTab("password")}
+                        >
+                            Password
+                        </button>
                     </div>
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <DeleteUserForm className="max-w-xl" />
-                    </div>
+                    {/* Tab Content */}
+                    {renderTabContent()}
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </Layout>
     );
 }

@@ -22,7 +22,7 @@ class TravelPackageFactory extends Factory
 
         $dateNow = now();
         // Generate startDate: antara 1 hingga 14 hari dari sekarang
-        $startDate = $dateNow->copy()->addDays(rand(1, 14));
+        $startDate = $dateNow->copy()->addDays(rand(1, 30));
 
         // Generate endDate: antara 1 hingga 7 hari setelah startDate
         $endDate = $startDate->copy()->addDays(rand(1, 7));

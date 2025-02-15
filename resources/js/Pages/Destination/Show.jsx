@@ -142,6 +142,13 @@ export default function Show({ destination }) {
                                 </div>
                             </div>
                         ))}
+                        {packages.length === 0 && (
+                            <div className="py-12 text-center">
+                                <p className="text-lg text-gray-600">
+                                    No packages available
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </main>

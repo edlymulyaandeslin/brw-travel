@@ -14,7 +14,7 @@ class DestinationSeeder extends Seeder
      */
     public function run(): void
     {
-        $names = ["Pulau Pagang", "Pulau Naga", "Pulau One Piece", "Pulau Bintang", "Pulau Kecil"];
+        $names = ["Pulau Dragon Ball", "Pulau Naga", "Pulau One Piece", "Pulau Bintang", "Pulau Kecil"];
 
         foreach ($names as $name) {
             Destination::factory()->create([

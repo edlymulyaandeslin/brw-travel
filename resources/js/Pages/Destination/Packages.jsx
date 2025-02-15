@@ -1,4 +1,9 @@
 import Layout from "@/Layouts/Layout";
+import {
+    formattingDateWithoutYear,
+    formattingDateWithYear,
+    formattingPrice,
+} from "@/utils";
 import { Head, Link } from "@inertiajs/react";
 import { ArrowLeft } from "react-feather";
 
@@ -40,9 +45,10 @@ export default function Packages({ travelPackages }) {
                                 <div className="relative bg-gray-200 aspect-video">
                                     <img
                                         src={
-                                            "/storage/" +
-                                                pkg.destination.image ||
-                                            "/placeholder-image.jpg"
+                                            pkg.destination.image
+                                                ? "/storage/" +
+                                                  pkg.destination.image
+                                                : "https://placehold.co/600x400/gray/white"
                                         }
                                         alt={pkg.title}
                                         className="object-cover w-full h-full"
@@ -58,12 +64,14 @@ export default function Packages({ travelPackages }) {
                                             {pkg.title}
                                         </h3>
                                         <span className="text-lg font-bold text-blue-600">
-                                            {new Intl.NumberFormat("id-ID", {
-                                                style: "currency",
-                                                currency: "IDR",
-                                                maximumFractionDigits: 0,
-                                            }).format(pkg.price)}
+                                            {formattingPrice(pkg.price)}
                                         </span>
+                                    </div>
+
+                                    <div className="flex items-start justify-between mb-2">
+                                        <h3 className="text-sm font-semibold text-gray-500">
+                                            Destination: {pkg.destination.name}
+                                        </h3>
                                     </div>
 
                                     <div className="flex items-center mb-2 text-gray-600">
@@ -122,20 +130,13 @@ export default function Packages({ travelPackages }) {
                                         <div className="text-sm text-gray-600">
                                             <p>
                                                 Date:{" "}
-                                                {new Date(
+                                                {formattingDateWithoutYear(
                                                     pkg.start_date
-                                                ).toLocaleDateString("en-US", {
-                                                    month: "short",
-                                                    day: "numeric",
-                                                })}{" "}
+                                                )}{" "}
                                                 -{" "}
-                                                {new Date(
+                                                {formattingDateWithYear(
                                                     pkg.end_date
-                                                ).toLocaleDateString("en-US", {
-                                                    month: "short",
-                                                    day: "numeric",
-                                                    year: "numeric",
-                                                })}
+                                                )}
                                             </p>
                                             <p className="mt-1">
                                                 Tour Guide: {pkg.agent}
