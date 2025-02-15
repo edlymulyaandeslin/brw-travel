@@ -58,6 +58,14 @@ Route::middleware('auth')->group(function () {
             'bookings' => $bookings
         ]);
     })->name("mybooking");
+
+    Route::get("/booking/{travel_package:slug}/create", function (TravelPackage $travelPackage) {
+        $travelPackage->load(["destination", "category"]);
+
+        return Inertia::render("Booking/Create", [
+            'travelPackage' => $travelPackage
+        ]);
+    })->name("booking.create");
 });
 
 Route::fallback(function () {

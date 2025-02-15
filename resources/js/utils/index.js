@@ -1,3 +1,5 @@
+import { format, parseISO } from "date-fns";
+
 export const formattingPrice = (price) => {
     return new Intl.NumberFormat("id-ID", {
         style: "currency",
@@ -19,4 +21,8 @@ export const formattingDateWithYear = (date) => {
         day: "numeric",
         year: "numeric",
     });
+};
+
+export const formatDate = (dateString) => {
+    return format(parseISO(dateString), "dd MMM yyyy");
 };

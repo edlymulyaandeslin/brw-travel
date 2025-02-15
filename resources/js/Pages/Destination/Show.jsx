@@ -1,15 +1,12 @@
 import Layout from "@/Layouts/Layout";
+import { formatDate } from "@/utils";
 import { Head, Link } from "@inertiajs/react";
-import { format, parseISO } from "date-fns"; // Import date-fns untuk format tanggal
 import { useState } from "react";
 import { ArrowLeft, Box, Calendar, Clock, Users } from "react-feather";
 
 export default function Show({ destination }) {
     const [packages, setPackages] = useState(destination.travel_packages);
     // Fungsi untuk format tanggal
-    const formatDate = (dateString) => {
-        return format(parseISO(dateString), "dd MMM yyyy");
-    };
 
     return (
         <Layout>
@@ -124,8 +121,12 @@ export default function Show({ destination }) {
                                             </span>
                                         </div>
 
-                                        <button
-                                            className={`w-full py-3 text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 ${
+                                        <Link
+                                            href={route(
+                                                "booking.create",
+                                                pkg.slug
+                                            )}
+                                            className={`w-full block text-center py-3 text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 ${
                                                 pkg.available_capacity === 0
                                                     ? "opacity-50 cursor-not-allowed"
                                                     : ""
@@ -137,7 +138,7 @@ export default function Show({ destination }) {
                                             {pkg.available_capacity > 0
                                                 ? "Book Now"
                                                 : "Fully Booked"}
-                                        </button>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
