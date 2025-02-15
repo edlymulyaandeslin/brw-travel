@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Destination;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DestinationSeeder extends Seeder
 {
@@ -13,6 +14,13 @@ class DestinationSeeder extends Seeder
      */
     public function run(): void
     {
-        Destination::factory(5)->create();
+        $names = ["Pulau Pagang", "Pulau Naga", "Pulau One Piece", "Pulau Bintang", "Pulau Kecil"];
+
+        foreach ($names as $name) {
+            Destination::factory()->create([
+                "name" => $name,
+                "slug" => Str::slug($name)
+            ]);
+        }
     }
 }

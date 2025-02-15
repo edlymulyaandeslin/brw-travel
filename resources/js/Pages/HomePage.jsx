@@ -175,7 +175,11 @@ export default function HomePage({ destinations }) {
                                 className="overflow-hidden transition-shadow bg-white shadow-md rounded-xl hover:shadow-xl"
                             >
                                 <img
-                                    src={"/storage/" + dest.image}
+                                    src={
+                                        dest.image
+                                            ? "/storage/" + dest.image
+                                            : "https://placehold.co/600x400/gray/white"
+                                    }
                                     alt={dest.name}
                                     className="object-cover w-full h-48 transition-all hover:scale-105"
                                 />

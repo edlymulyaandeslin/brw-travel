@@ -21,7 +21,7 @@ class DestinationFactory extends Factory
         return [
             'name' => $name,
             'slug' => Str::slug($name),
-            'description' => $this->faker->paragraph(),
+            'description' => $this->faker->paragraph(5),
         ];
     }
 }

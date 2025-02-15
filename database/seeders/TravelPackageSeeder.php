@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Str;
 use App\Models\TravelPackage;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -13,6 +14,12 @@ class TravelPackageSeeder extends Seeder
      */
     public function run(): void
     {
-        TravelPackage::factory(10)->create();
+        for ($i = 1; $i <= 10; $i++) {
+            $title = "Travel Package " . $i;
+            TravelPackage::factory()->create([
+                "title" => $title,
+                "slug" => Str::slug($title)
+            ]);
+        }
     }
 }

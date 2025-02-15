@@ -31,7 +31,11 @@ export default function Show({ destination }) {
                 {/* Destination Header */}
                 <div className="mb-8">
                     <img
-                        src={"/storage/" + destination.image}
+                        src={
+                            destination.image
+                                ? "/storage/" + destination.image
+                                : "https://placehold.co/600x400/gray/white"
+                        }
                         alt={destination.name}
                         className="object-cover w-full shadow-xl h-96 rounded-2xl"
                     />

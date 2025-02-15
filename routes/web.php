@@ -18,6 +18,7 @@ Route::get('/', function () {
 
 Route::get("/destination/{destination:slug}", function (Destination $destination) {
     $destination->load("travelPackages.category");
+
     return Inertia::render("Destination/Show", [
         "destination" => $destination,
     ]);
