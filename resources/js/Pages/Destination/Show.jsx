@@ -3,10 +3,10 @@ import { formatDate } from "@/utils";
 import { Head, Link } from "@inertiajs/react";
 import { useState } from "react";
 import { ArrowLeft, Box, Calendar, Clock, Users } from "react-feather";
+import { FaCarSide } from "react-icons/fa6";
 
 export default function Show({ destination }) {
     const [packages, setPackages] = useState(destination.travel_packages);
-    // Fungsi untuk format tanggal
 
     return (
         <Layout>
@@ -96,6 +96,14 @@ export default function Show({ destination }) {
                                                         )}
                                                     </span>
                                                 </div>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                                <FaCarSide className="w-5 h-5 text-blue-600" />
+                                                <span>
+                                                    {pkg.car.name}{" "}
+                                                    {pkg.car.merk}{" "}
+                                                    {pkg.car.tahun}
+                                                </span>
                                             </div>
                                         </div>
                                         <p className="mb-4 text-gray-600">

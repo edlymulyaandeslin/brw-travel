@@ -24,6 +24,7 @@ return new class extends Migration
                 Booking::COMPLETED,
                 Booking::CANCELLED,
             ]);
+            $table->text("notes")->nullable();
             $table->timestamps();
         });
     }

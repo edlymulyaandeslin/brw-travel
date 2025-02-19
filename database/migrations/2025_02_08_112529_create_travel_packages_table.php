@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('destination_id')->constrained("destinations");
             $table->foreignId('category_id')->constrained("categories");
+            $table->foreignId('car_id')->constrained("cars");
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description');
@@ -22,9 +23,9 @@ return new class extends Migration
             $table->integer('duration_days');
             $table->integer('capacity');
             $table->integer('available_capacity');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('agent');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
+            $table->string('driver');
             $table->timestamps();
         });
     }

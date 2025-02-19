@@ -32,6 +32,7 @@ class TravelPackageFactory extends Factory
         return [
             'destination_id' => mt_rand(1, 5),
             'category_id' => mt_rand(1, 3),
+            'car_id' => mt_rand(1, 7),
             'title' => $title,
             'slug' => Str::slug($title),
             'description' => $this->faker->paragraph(4),
@@ -41,7 +42,7 @@ class TravelPackageFactory extends Factory
             'available_capacity' => $capacity,
             'start_date' => $startDate,
             'end_date' => $endDate,
-            'agent' => $this->faker->name(),
+            'driver' => $this->faker->name(),
         ];
     }
 }

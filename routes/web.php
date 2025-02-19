@@ -20,7 +20,7 @@ Route::get('/', function () {
 })->name("home");
 
 Route::get("/destination/{destination:slug}", function (Destination $destination) {
-    $destination->load("travelPackages.category");
+    $destination->load(["travelPackages.category", "travelPackages.car"]);
 
     return Inertia::render("Destination/Show", [
         "destination" => $destination,

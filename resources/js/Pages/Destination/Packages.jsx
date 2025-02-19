@@ -1,9 +1,5 @@
 import Layout from "@/Layouts/Layout";
-import {
-    formattingDateWithoutYear,
-    formattingDateWithYear,
-    formattingPrice,
-} from "@/utils";
+import { formatDate, formattingPrice } from "@/utils";
 import { Head, Link } from "@inertiajs/react";
 import { ArrowLeft } from "react-feather";
 
@@ -130,13 +126,8 @@ export default function Packages({ travelPackages }) {
                                         <div className="text-sm text-gray-600">
                                             <p>
                                                 Date:{" "}
-                                                {formattingDateWithoutYear(
-                                                    pkg.start_date
-                                                )}{" "}
-                                                -{" "}
-                                                {formattingDateWithYear(
-                                                    pkg.end_date
-                                                )}
+                                                {formatDate(pkg.start_date)} -{" "}
+                                                {formatDate(pkg.end_date)}
                                             </p>
                                             <p className="mt-1">
                                                 Tour Guide: {pkg.agent}

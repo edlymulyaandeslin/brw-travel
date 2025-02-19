@@ -24,5 +24,5 @@ export const formattingDateWithYear = (date) => {
 };
 
 export const formatDate = (dateString) => {
-    return format(parseISO(dateString), "dd MMM yyyy");
+    return format(parseISO(dateString), "dd MMM yyyy HH:mm");
 };

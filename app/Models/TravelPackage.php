@@ -12,6 +12,11 @@ class TravelPackage extends Model
 
     protected $guarded = ['id'];
 
+    protected $casts = [
+        "start_date" => "datetime",
+        "end_date" => "datetime",
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -20,6 +25,11 @@ class TravelPackage extends Model
     public function destination()
     {
         return $this->belongsTo(Destination::class);
+    }
+
+    public function car()
+    {
+        return $this->belongsTo(Car::class, "car_id", "id");
     }
 
     public function bookings()

@@ -23,6 +23,7 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TravelPackageResource\Pages;
 use App\Filament\Resources\TravelPackageResource\RelationManagers;
+use Filament\Forms\Components\DateTimePicker;
 
 class TravelPackageResource extends Resource
 {
@@ -41,6 +42,7 @@ class TravelPackageResource extends Resource
                 Select::make('category_id')
                     ->required()
                     ->relationship('category', 'name'),
+
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255)
@@ -48,13 +50,15 @@ class TravelPackageResource extends Resource
                     ->afterStateUpdated(function ($state, Set $set) {
                         $set("slug", Str::slug($state));
                     }),
+                Select::make('car_id')
+                    ->required()
+                    ->relationship('car', 'name'),
                 TextInput::make('slug')
                     ->required()
                     ->disabled()
                     ->dehydrated(),
                 Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
+                    ->required(),
                 TextInput::make('price')
                     ->required()
                     ->numeric()
@@ -72,11 +76,11 @@ class TravelPackageResource extends Resource
                 TextInput::make('available_capacity')
                     ->required()
                     ->numeric(),
-                DatePicker::make('start_date')
+                DateTimePicker::make('start_date')
                     ->required(),
-                DatePicker::make('end_date')
+                DateTimePicker::make('end_date')
                     ->required(),
-                TextInput::make('agent')
+                TextInput::make('driver')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -88,15 +92,19 @@ class TravelPackageResource extends Resource
             ->columns([
                 TextColumn::make('destination.name')
                     ->sortable(),
-                TextColumn::make('category.name')
-                    ->sortable(),
                 TextColumn::make('title')
                     ->searchable(),
                 TextColumn::make('price')
                     ->money("IDR")
                     ->sortable(),
-                TextColumn::make('agent')
+                TextColumn::make('driver')
                     ->searchable(),
+                TextColumn::make('start_date')
+                    ->searchable()
+                    ->dateTime("d M Y, H:i"),
+                TextColumn::make('end_date')
+                    ->searchable()
+                    ->dateTime("d M Y, H:i"),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

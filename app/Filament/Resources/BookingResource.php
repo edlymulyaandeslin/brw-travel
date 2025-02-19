@@ -12,14 +12,17 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\TravelPackage;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
@@ -53,36 +56,44 @@ class BookingResource extends Resource
                             ->required()
                             ->relationship("travelPackage", "title")
                             ->live()
-                            ->afterStateUpdated(
-                                fn($state, Set $set, Get $get) =>
-                                $set('payment.amount', TravelPackage::find($state)?->price * $get('passenger_count') ?? 0)
-                            )
+                            ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                                if ($state) {
+                                    $travelPackage = TravelPackage::find($state);
+                                    $price = $travelPackage->price ?? 0;
+                                    $passengerCount = $get('passenger_count') ?? 1;
+                                    $set('payment.amount', $price * $passengerCount);
+                                }
+                            })
                             ->disabled(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord),
 
                         DatePicker::make('booking_date')
                             ->required()
                             ->disabled(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord),
 
-
                         TextInput::make('passenger_count')
                             ->required()
                             ->numeric()
                             ->default(1)
-                            ->live(true)
-                            ->afterStateUpdated(
-                                fn($state, Set $set, Get $get) => $get('travel_package_id') &&
-                                    $set('payment.amount', TravelPackage::find($get('travel_package_id'))?->price * $state ?? 0)
-                            ),
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                                if ($travelPackageId = $get('travel_package_id')) {
+                                    $travelPackage = TravelPackage::find($travelPackageId);
+                                    $price = $travelPackage->price ?? 0;
+                                    $set('payment.amount', $price * $state);
+                                }
+                            }),
 
                         Select::make('status')
                             ->required()
                             ->options([
-                                "Pending" => Booking::PENDING,
+                                "Pending"   => Booking::PENDING,
                                 "Confirmed" => Booking::CONFIRMED,
                                 "Completed" => Booking::COMPLETED,
                                 "Cancelled" => Booking::CANCELLED,
                             ])
                             ->default("Pending"),
+                        Textarea::make("notes")
+                            ->label("Notes")
                     ])->columns(2),
 
                 Section::make('Payment Detail')
@@ -99,18 +110,43 @@ class BookingResource extends Resource
                         Select::make('payment_method')
                             ->required()
                             ->options([
-                                "Cash" => "Cash",
+                                Payment::CASH     => Payment::CASH,
+                                Payment::TRANSFER => Payment::TRANSFER,
                             ]),
+
+                        FileUpload::make('bukti_bayar')
+                            ->label("Bukti Bayar")
+                            ->directory('payments')
+                            ->image(),
+
+                        TextInput::make('dp')
+                            ->label("Jumlah Transfer")
+                            ->numeric()
+                            ->prefix("IDR")
+                            ->default(0),
+
 
                         Select::make('status')
                             ->label("Payment Status")
                             ->required()
                             ->options([
-                                "Paid" => Payment::PAID,
-                                "Unpaid" => Payment::UNPAID,
-                            ])
-                            ->default(Payment::UNPAID),
+                                Payment::DP     => Payment::DP,
+                                Payment::PAID   => Payment::PAID,
+                                Payment::UNPAID => Payment::UNPAID,
+                            ]),
                     ]),
+
+                Section::make('Booking Seat')
+                    ->schema([
+                        Repeater::make('seats')
+                            ->relationship("seats")
+                            ->schema([
+                                TextInput::make('seat_number')
+                                    ->maxValue(6)
+                                    ->required()
+                                // ->dehydrated()
+                            ])
+                    ])
             ]);
     }
 
@@ -121,6 +157,8 @@ class BookingResource extends Resource
                 TextColumn::make('user.name')
                     ->label('User')
                     ->sortable(),
+                TextColumn::make('user.phone')
+                    ->label('Phone User'),
                 TextColumn::make('travelPackage.title')
                     ->label('Travel Package')
                     ->sortable(),
@@ -136,7 +174,7 @@ class BookingResource extends Resource
                     ->sortable(),
                 SelectColumn::make('status')
                     ->options([
-                        "Pending" => Booking::PENDING,
+                        "Pending"   => Booking::PENDING,
                         "Confirmed" => Booking::CONFIRMED,
                         "Completed" => Booking::COMPLETED,
                         "Cancelled" => Booking::CANCELLED,
@@ -144,8 +182,9 @@ class BookingResource extends Resource
                 SelectColumn::make('payment.status')
                     ->label("Payment Status")
                     ->options([
-                        "Paid" => Payment::PAID,
-                        "Unpaid" => Payment::UNPAID,
+                        Payment::DP => Payment::DP,
+                        Payment::PAID => Payment::PAID,
+                        Payment::UNPAID => Payment::UNPAID,
                     ]),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -180,9 +219,9 @@ class BookingResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBookings::route('/'),
+            'index'  => Pages\ListBookings::route('/'),
             'create' => Pages\CreateBooking::route('/create'),
-            'edit' => Pages\EditBooking::route('/{record}/edit'),
+            'edit'   => Pages\EditBooking::route('/{record}/edit'),
         ];
     }
 }

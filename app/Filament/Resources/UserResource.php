@@ -35,6 +35,9 @@ class UserResource extends Resource
                     ->unique(User::class, "email", ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
+                TextInput::make('phone')
+                    ->required()
+                    ->maxLength(20),
                 Select::make("roles")
                     ->relationship("roles", "name")
                     ->required(),
@@ -53,6 +56,7 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('phone'),
                 Tables\Columns\BadgeColumn::make('roles.name')
                     ->label('Role')
                     ->searchable(),

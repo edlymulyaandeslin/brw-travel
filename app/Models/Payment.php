@@ -12,8 +12,14 @@ class Payment extends Model
 
     protected $guarded = ['id'];
 
-    public  const PAID = 'Paid';
-    public  const UNPAID = 'Unpaid';
+    // payment status
+    public const DP = 'DP';
+    public const PAID = 'Paid';
+    public const UNPAID = 'Unpaid';
+
+    // payment method
+    public const TRANSFER = 'Transfer';
+    public const CASH = 'Cash';
 
     public function booking()
     {

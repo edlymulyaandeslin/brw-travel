@@ -87,7 +87,7 @@ export default function HomePage({ destinations }) {
                                         Check-in
                                     </label>
                                     <input
-                                        type="date"
+                                        type="datetime-local"
                                         className="w-full p-3 border rounded-lg"
                                         value={checkIn}
                                         onChange={(e) =>
@@ -100,7 +100,7 @@ export default function HomePage({ destinations }) {
                                         Check-out
                                     </label>
                                     <input
-                                        type="date"
+                                        type="datetime-local"
                                         className="w-full p-3 border rounded-lg"
                                         value={checkOut}
                                         onChange={(e) =>
