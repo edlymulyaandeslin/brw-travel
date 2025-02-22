@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
@@ -51,70 +52,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Route list booking
-    Route::get("/mybooking", function () {
-        $bookings = Booking::with(["travelPackage.destination", "payment"])->where("user_id", Auth::user()->id)->latest()->get();
-        return Inertia::render("Booking/Index", [
-            'bookings' => $bookings
-        ]);
-    })->name("mybooking");
+    Route::get("/mybooking", [BookingController::class, "index"])->name("mybooking");
 
-    Route::get("/booking/{travel_package:slug}/create", function (TravelPackage $travelPackage) {
-        $travelPackage->load(["destination", "category"]);
+    Route::get("/booking/{travel_package:slug}/create", [BookingController::class, "create"])->name("booking.create");
 
-        return Inertia::render("Booking/Create", [
-            'travelPackage' => $travelPackage
-        ]);
-    })->name("booking.create");
-
-    Route::post("/booking", function (Request $request) {
-        $userId = Auth::user()->id;
-        $travelPackageId = $request->travel_package_id;
-        $bookingDate = $request->booking_date;
-        $passengerCount = $request->passenger_count;
-        // $price = $request->price;
-        $amount = $request->total_amount;
-        $payment_method = $request->payment_method;
-        $payment_status = $request->payment_status;
-
-
-        DB::beginTransaction();
-        try {
-            // create booking
-            $booking = Booking::create([
-                "user_id" => $userId,
-                "travel_package_id" => $travelPackageId,
-                "booking_date" => $bookingDate,
-                "passenger_count" => $passengerCount,
-                "status" => Booking::PENDING,
-            ]);
-
-            // create payment
-            $booking->payment()->create([
-                "amount" => $amount,
-                "payment_method" => $payment_method,
-                "status" => $payment_status,
-            ]);
-
-            // decrement available capacity
-            $travelPackage = TravelPackage::find($travelPackageId);
-
-            if ($travelPackage->available_capacity < $passengerCount) {
-                throw new \Exception("Not enough capacity. Only " . $travelPackage->available_capacity . " slots available.");
-            }
-
-            $travelPackage->available_capacity -= $passengerCount;
-            $travelPackage->save();
-
-            DB::commit();
-
-            session()->flash("success", "Booking successfully created");
-
-            return redirect()->route(route: "mybooking");
-        } catch (\Exception $e) {
-            DB::rollBack();
-            session()->flash("error", $e->getMessage());
-        }
-    })->name("booking.store");
+    Route::post("/booking", [BookingController::class, "store"])->name("booking.store");
 });
 
 Route::fallback(function () {

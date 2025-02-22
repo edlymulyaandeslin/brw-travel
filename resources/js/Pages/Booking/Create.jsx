@@ -3,15 +3,19 @@ import { formatDate, formattingPrice } from "@/utils";
 import { Head, useForm } from "@inertiajs/react";
 import { toast } from "sonner";
 
-export default function Create({ travelPackage }) {
+export default function Create({ travelPackage, bookingSeats }) {
     const { data, setData, post, processing, errors } = useForm({
         travel_package_id: travelPackage.id,
-        booking_date: "",
+        booking_date: new Date().toISOString().split("T")[0],
         passenger_count: 1,
         price: travelPackage.price,
         total_amount: travelPackage.price,
         payment_method: "",
-        payment_status: "Unpaid",
+        payment_status: "",
+        bukti_bayar: null,
+        jumlah_dp: 0,
+        notes: "",
+        seats: [],
     });
 
     // Update total_amount saat passenger_count berubah
@@ -19,22 +23,45 @@ export default function Create({ travelPackage }) {
         const count = parseInt(e.target.value, 10) || 1;
         setData("passenger_count", count);
         setData("total_amount", count * data.price);
+        if (count < data.seats.length) {
+            setData("seats", data.seats.slice(0, count));
+        }
     };
 
     // Handle submit form
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const now = new Date().toLocaleDateString("en-CA");
-
-        if (!data.booking_date || !data.passenger_count || !data.payment_method)
+        if (!data.passenger_count || !data.payment_method)
             return toast.warning("Pastikan semua data telah diisi");
 
-        if (data.booking_date < now) {
-            return toast.warning(
-                "Tanggal booking tidak boleh kurang dari hari ini"
-            );
+        const validImageTypes = ["image/jpeg", "image/png", "image/jpg"];
+        const maxSize = 2 * 1024 * 1024; // 2MB
+
+        const file = data.bukti_bayar;
+
+        if (file) {
+            if (!validImageTypes.includes(file.type)) {
+                toast.warning("File harus berupa gambar (JPEG/PNG)");
+                return;
+            }
+
+            if (file.size > maxSize) {
+                toast.warning("Ukuran file tidak boleh lebih dari 2MB");
+                return;
+            }
         }
+
+        if (data.seats.length < data.passenger_count) {
+            toast.warning(
+                `Silakan pilih ${
+                    data.passenger_count - data.seats.length
+                } kursi lagi untuk melanjutkan.`
+            );
+            return;
+        }
+
+        console.log(data);
 
         post(route("booking.store"));
     };
@@ -126,13 +153,26 @@ export default function Create({ travelPackage }) {
                                 </div>
                             </div>
 
-                            {/* Agent */}
+                            {/* Driver */}
                             <div className="sm:col-span-2">
                                 <p className="text-xs text-gray-500 uppercase">
-                                    Agent
+                                    Driver
                                 </p>
                                 <p className="text-lg font-medium text-gray-700">
-                                    {travelPackage.agent}
+                                    {travelPackage.driver}
+                                </p>
+                            </div>
+
+                            {/* Car */}
+                            <div className="sm:col-span-2">
+                                <p className="text-xs text-gray-500 uppercase">
+                                    Car
+                                </p>
+                                <p className="text-lg font-medium text-gray-700">
+                                    {travelPackage.car.merk}{" "}
+                                    {travelPackage.car.name}{" "}
+                                    {travelPackage.car.tahun} [
+                                    {travelPackage.car.plate_number}]
                                 </p>
                             </div>
                         </div>
@@ -148,27 +188,6 @@ export default function Create({ travelPackage }) {
                     <div className="grid gap-4 md:grid-cols-2">
                         {/* Kiri: Booking Details */}
                         <div>
-                            {/* Booking Date */}
-                            <div className="mb-4">
-                                <label className="block mb-2 font-semibold">
-                                    Booking Date
-                                </label>
-                                <input
-                                    type="date"
-                                    value={data.booking_date}
-                                    onChange={(e) =>
-                                        setData("booking_date", e.target.value)
-                                    }
-                                    className="w-full p-2 border rounded-md"
-                                    required
-                                />
-                                {errors.booking_date && (
-                                    <p className="mt-1 text-sm text-red-600">
-                                        {errors.booking_date}
-                                    </p>
-                                )}
-                            </div>
-
                             {/* Passenger Count */}
                             <div className="mb-4">
                                 <label className="block mb-2 font-semibold">
@@ -201,6 +220,112 @@ export default function Create({ travelPackage }) {
                                     readOnly
                                 />
                             </div>
+
+                            {/* Notes */}
+                            <div className="mb-4">
+                                <label className="block mb-2 font-semibold">
+                                    Notes
+                                </label>
+                                <textarea
+                                    type="text"
+                                    onChange={(e) =>
+                                        setData("notes", e.target.value)
+                                    }
+                                    value={data.notes}
+                                    className="w-full p-2 border rounded-md"
+                                    rows={5}
+                                />
+                            </div>
+
+                            {/* Kursi */}
+                            {data.passenger_count && (
+                                <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+                                    <h2 className="mb-2 text-lg font-semibold text-gray-700">
+                                        Pilih Kursi:
+                                    </h2>
+                                    <div className="grid grid-cols-4 gap-2 md:grid-cols-6 lg:grid-cols-8">
+                                        {Array.from({
+                                            length: travelPackage.capacity,
+                                        }).map((_, index) => {
+                                            // Cek apakah kursi dengan nomor (index+1) sudah ada di bookingSeats
+                                            const isBooked = bookingSeats.some(
+                                                (seat) =>
+                                                    Number(seat.seat_number) ===
+                                                    index + 1
+                                            );
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    className="relative"
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        id={`seat-${index}`}
+                                                        disabled={isBooked}
+                                                        className={`hidden ${
+                                                            data.seats.includes(
+                                                                index + 1
+                                                            ) && "peer"
+                                                        }`}
+                                                        onChange={(e) => {
+                                                            const isChecked =
+                                                                e.target
+                                                                    .checked;
+
+                                                            if (isChecked) {
+                                                                const seatsLength =
+                                                                    data.seats
+                                                                        .length +
+                                                                    1;
+                                                                if (
+                                                                    seatsLength <=
+                                                                    data.passenger_count
+                                                                ) {
+                                                                    setData(
+                                                                        "seats",
+                                                                        [
+                                                                            ...data.seats,
+                                                                            index +
+                                                                                1,
+                                                                        ]
+                                                                    );
+                                                                    return;
+                                                                }
+                                                                toast.warning(
+                                                                    "Pemilihan kursi sudah mencapai maksimal"
+                                                                );
+                                                                return;
+                                                            } else {
+                                                                setData(
+                                                                    "seats",
+                                                                    data.seats.filter(
+                                                                        (
+                                                                            seat
+                                                                        ) =>
+                                                                            seat !==
+                                                                            index +
+                                                                                1
+                                                                    )
+                                                                );
+                                                            }
+                                                        }}
+                                                    />
+                                                    <label
+                                                        htmlFor={`seat-${index}`}
+                                                        className={`flex items-center justify-center p-3 text-sm font-medium transition-all duration-300 border border-gray-300 rounded-md   ${
+                                                            isBooked
+                                                                ? "cursor-not-allowed bg-gray-300"
+                                                                : "cursor-pointer hover:border-blue-500 peer-checked:border-2 peer-checked:border-blue-500"
+                                                        }`}
+                                                    >
+                                                        {index + 1}
+                                                    </label>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* Kanan: Payment Details */}
@@ -225,20 +350,81 @@ export default function Create({ travelPackage }) {
                                 </label>
                                 <select
                                     value={data.payment_method}
-                                    onChange={(e) =>
+                                    onChange={(e) => {
+                                        let payment_method = e.target.value;
                                         setData(
                                             "payment_method",
-                                            e.target.value
-                                        )
-                                    }
+                                            payment_method
+                                        );
+
+                                        if (payment_method == "Transfer") {
+                                            setData("payment_status", "DP");
+                                        } else {
+                                            setData("payment_status", "Unpaid");
+                                            setData("jumlah_dp", 0);
+                                            setData("bukti_bayar", null);
+                                        }
+                                    }}
                                     className="w-full p-2 border rounded-md"
+                                    required
                                 >
                                     <option value={""}>
                                         Select Payment Method
                                     </option>
                                     <option value="Cash">Cash</option>
+                                    <option value="Transfer">Transfer</option>
                                 </select>
                             </div>
+
+                            {data.payment_method == "Transfer" && (
+                                <>
+                                    {/* Rekening TF */}
+                                    <p className="text-sm font-bold text-green-600">
+                                        Silakan Transfer ke rekening BNI :
+                                        123456789098765 Rexy Prasetiya. <br />
+                                        Nominal transfer:{" "}
+                                        {formattingPrice(
+                                            (data.total_amount * 50) / 100
+                                        )}{" "}
+                                        untuk uang muka.
+                                    </p>
+                                    {/* Bukti TF */}
+                                    <div className="mb-4">
+                                        <label className="block mb-2 font-semibold">
+                                            Upload Bukti Transfer
+                                        </label>
+                                        <input
+                                            type="file"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "bukti_bayar",
+                                                    e.target.files[0]
+                                                )
+                                            }
+                                            className="w-full p-2 border rounded-md form-input"
+                                            required
+                                        />
+                                    </div>
+                                    {/* Jumlah TF */}
+                                    <div className="mb-4">
+                                        <label className="block mb-2 font-semibold">
+                                            Jumlah Transfer
+                                        </label>
+                                        <input
+                                            type="number"
+                                            value={data.jumlah_dp}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "jumlah_dp",
+                                                    Number(e.target.value)
+                                                )
+                                            }
+                                            className="w-full p-2 border rounded-md form-input"
+                                            required
+                                        />
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
 

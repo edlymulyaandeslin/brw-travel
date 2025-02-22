@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('booking_seats', function (Blueprint $table) {
             $table->id();
             $table->foreignId("booking_id")->constrained("bookings")->cascadeOnDelete();
+            $table->foreignId("travel_package_id")->constrained("travel_packages");
             $table->string("seat_number");
             $table->timestamps();
         });

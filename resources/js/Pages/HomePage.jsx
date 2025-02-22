@@ -20,7 +20,8 @@ export default function HomePage({ destinations }) {
         { title: "Kepuasan Pelanggan", desc: "98% rating kepuasan pengguna" },
     ];
 
-    const handleFindPackages = () => {
+    const handleFindPackages = (e) => {
+        e.preventDefault();
         const now = new Date().toLocaleDateString("en-CA");
 
         setLoading(true);
@@ -66,7 +67,10 @@ export default function HomePage({ destinations }) {
                         </h1>
 
                         {/* Search Form */}
-                        <div className="p-6 bg-white rounded-lg shadow-2xl">
+                        <form
+                            className="p-6 bg-white rounded-lg shadow-2xl"
+                            onSubmit={handleFindPackages}
+                        >
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                                 <div>
                                     <label className="block mb-2 text-sm font-bold text-gray-700">
@@ -80,6 +84,7 @@ export default function HomePage({ destinations }) {
                                         onChange={(e) =>
                                             setDestination(e.target.value)
                                         }
+                                        required
                                     />
                                 </div>
                                 <div>
@@ -93,6 +98,7 @@ export default function HomePage({ destinations }) {
                                         onChange={(e) =>
                                             setCheckIn(e.target.value)
                                         }
+                                        required
                                     />
                                 </div>
                                 <div>
@@ -106,6 +112,7 @@ export default function HomePage({ destinations }) {
                                         onChange={(e) =>
                                             setCheckOut(e.target.value)
                                         }
+                                        required
                                     />
                                 </div>
                                 <div>
@@ -120,17 +127,17 @@ export default function HomePage({ destinations }) {
                                         onChange={(e) =>
                                             setTravelers(e.target.value)
                                         }
+                                        required
                                     />
                                 </div>
                             </div>
                             <button
-                                type="button"
-                                onClick={handleFindPackages}
+                                type="submit"
                                 className="w-full py-4 mt-6 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
                             >
                                 {loading ? "Mencari..." : "Cari Paket Wisata"}
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
