@@ -1,14 +1,121 @@
 import Layout from "@/Layouts/Layout";
-import { formattingDateWithYear, formattingPrice } from "@/utils";
+import { formatDate, formattingDateWithYear, formattingPrice } from "@/utils";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
 import { Eye, X } from "react-feather";
+import { FaPrint } from "react-icons/fa6";
 
 export default function Index({ bookings }) {
     const [selectedBooking, setSelectedBooking] = useState(null);
 
     const handleViewBooking = (booking) => {
         setSelectedBooking(booking);
+    };
+
+    const handlePrintBooking = (booking) => {
+        // Buat konten HTML dengan tampilan nota yang diperbesar
+        const printContent = `
+          <html>
+            <head>
+              <title>Booking Receipt</title>
+              <style>
+                body {
+                  font-family: 'Courier New', Courier, monospace;
+                  margin: 0;
+                  padding: 40px;
+                  background: #f9f9f9;
+                  color: #333;
+                  font-size: 24px;
+                }
+                .receipt {
+                  max-width: 1000px;
+                  margin: 0 auto;
+                  background: #fff;
+                  border: 2px solid #333;
+                  padding: 40px;
+                }
+                .receipt header {
+                  text-align: center;
+                  border-bottom: 3px solid #333;
+                  padding-bottom: 20px;
+                  margin-bottom: 40px;
+                }
+                .receipt header h1 {
+                  margin: 0;
+                  font-size: 48px;
+                }
+                .receipt header p {
+                  margin: 10px 0;
+                  font-size: 28px;
+                }
+                .receipt .details p {
+                  margin: 15px 0;
+                  font-size: 28px;
+                  line-height: 1.6;
+                }
+                .receipt .details p span {
+                  display: inline-block;
+                  width: 300px;
+                  font-weight: bold;
+                }
+                .receipt footer {
+                  text-align: center;
+                  border-top: 3px solid #333;
+                  padding-top: 20px;
+                  margin-top: 40px;
+                  font-size: 24px;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="receipt">
+                <header>
+                  <h1>Booking Receipt</h1>
+                  <p>Your Company Name</p>
+                  <p>Date: ${formattingDateWithYear(booking.booking_date)}</p>
+                </header>
+                <div class="details">
+                  <p><span>Package:</span> ${booking.travel_package.title}</p>
+                  <p><span>Destination:</span> ${
+                      booking.travel_package.destination.name
+                  }</p>
+                  <p><span>Booking Date:</span> ${formattingDateWithYear(
+                      booking.booking_date
+                  )}</p>
+                  <p><span>Passengers:</span> ${booking.passenger_count}</p>
+                  <p><span>Price:</span> ${formattingPrice(
+                      booking.travel_package.price
+                  )}/person</p>
+                  <p><span>Payment Method:</span> ${
+                      booking.payment.payment_method
+                  }</p>
+                  <p><span>Down Payment:</span> ${formattingPrice(
+                      booking.payment.jumlah_dp
+                  )}</p>
+                  <p><span>Amount:</span> ${formattingPrice(
+                      booking.payment.amount
+                  )}</p>
+                  <p><span>Remaining:</span> ${formattingPrice(
+                      booking.payment.amount - booking.payment.jumlah_dp
+                  )}</p>
+                  <p><span>Status:</span> ${booking.status}</p>
+                  <p><span>Payment Status:</span> ${booking.payment.status}</p>
+                </div>
+                <footer>
+                  <p>Thank you for your booking!</p>
+                  <p>Contact us: yourcompany@example.com</p>
+                </footer>
+              </div>
+            </body>
+          </html>
+        `;
+
+        const newWindow = window.open("", "", "width=1200,height=800");
+        newWindow.document.write(printContent);
+        newWindow.document.close();
+        newWindow.focus();
+        newWindow.print();
+        newWindow.close();
     };
 
     const closeModal = () => {
@@ -29,6 +136,9 @@ export default function Index({ bookings }) {
                                         Travel Package
                                     </th>
                                     <th className="px-4 py-2 text-left">
+                                        Destination
+                                    </th>
+                                    <th className="px-4 py-2 text-left">
                                         Booking Date
                                     </th>
                                     <th className="px-4 py-2 text-left">
@@ -38,19 +148,25 @@ export default function Index({ bookings }) {
                                         Travel Price
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Status
-                                    </th>
-                                    <th className="px-4 py-2 text-left">
-                                        Payment Amount
-                                    </th>
-                                    <th className="px-4 py-2 text-left">
                                         Payment Method
+                                    </th>
+                                    <th className="px-4 py-2 text-left">
+                                        Down Payment
+                                    </th>
+                                    <th className="px-4 py-2 text-left">
+                                        Amount
+                                    </th>
+                                    <th className="px-4 py-2 text-left">
+                                        Remaining Payment
+                                    </th>
+                                    <th className="px-4 py-2 text-left">
+                                        Status
                                     </th>
                                     <th className="px-4 py-2 text-left">
                                         Payment Status
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Actions
+                                        Action
                                     </th>
                                 </tr>
                             </thead>
@@ -62,6 +178,12 @@ export default function Index({ bookings }) {
                                     >
                                         <td className="px-4 py-2">
                                             {booking.travel_package.title}
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            {
+                                                booking.travel_package
+                                                    .destination.name
+                                            }
                                         </td>
                                         <td className="px-4 py-2">
                                             {formattingDateWithYear(
@@ -77,6 +199,26 @@ export default function Index({ bookings }) {
                                             )}
                                             /person
                                         </td>
+                                        <td className="px-4 py-2">
+                                            {booking.payment.payment_method}
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            {formattingPrice(
+                                                booking.payment.jumlah_dp
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            {formattingPrice(
+                                                booking.payment.amount
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            {formattingPrice(
+                                                booking.payment.amount -
+                                                    booking.payment.jumlah_dp
+                                            )}
+                                        </td>
+
                                         <td className="px-4 py-2">
                                             <span
                                                 className={`px-2 py-1 text-sm font-semibold rounded-lg ${
@@ -99,19 +241,14 @@ export default function Index({ bookings }) {
                                             </span>
                                         </td>
                                         <td className="px-4 py-2">
-                                            {formattingPrice(
-                                                booking.payment.amount
-                                            )}
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            {booking.payment.payment_method}
-                                        </td>
-                                        <td className="px-4 py-2">
                                             <span
                                                 className={`px-2 py-1 text-sm font-semibold rounded-lg ${
                                                     booking.payment.status ===
                                                     "Paid"
                                                         ? "bg-blue-200 text-blue-800"
+                                                        : booking.payment
+                                                              .status === "DP"
+                                                        ? "bg-yellow-200 text-yellow-800"
                                                         : "bg-red-200 text-red-800"
                                                 }`}
                                             >
@@ -119,14 +256,28 @@ export default function Index({ bookings }) {
                                             </span>
                                         </td>
                                         <td className="px-4 py-2">
-                                            <button
-                                                onClick={() =>
-                                                    handleViewBooking(booking)
-                                                }
-                                                className="flex items-center justify-center p-2 text-white transition duration-300 bg-blue-500 rounded-full hover:bg-blue-700"
-                                            >
-                                                <Eye size={20} />
-                                            </button>
+                                            <div className="flex w-full gap-2">
+                                                <button
+                                                    onClick={() =>
+                                                        handleViewBooking(
+                                                            booking
+                                                        )
+                                                    }
+                                                    className="flex items-center justify-center p-2 text-white transition duration-300 bg-blue-500 rounded-full hover:bg-blue-700"
+                                                >
+                                                    <Eye size={20} />
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handlePrintBooking(
+                                                            booking
+                                                        )
+                                                    }
+                                                    className="flex items-center justify-center p-2 text-white transition duration-300 bg-blue-500 rounded-full hover:bg-blue-700"
+                                                >
+                                                    <FaPrint size={20} />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}
@@ -138,8 +289,8 @@ export default function Index({ bookings }) {
                 )}
             </div>
             {selectedBooking && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="relative w-full h-full p-4 overflow-y-auto bg-white shadow-lg md:h-auto md:max-w-3xl md:rounded-lg md:p-6">
+                <div className="fixed inset-0 flex items-center justify-center overflow-y-auto bg-black bg-opacity-50">
+                    <div className="relative w-full max-h-[90vh] p-4 overflow-y-auto bg-white shadow-lg md:max-w-3xl md:rounded-lg md:p-6">
                         {/* Tombol Close */}
                         <button
                             onClick={closeModal}
@@ -154,72 +305,134 @@ export default function Index({ bookings }) {
                         </h2>
 
                         {/* Konten Modal */}
-                        <div className="space-y-4 text-sm text-gray-700 md:text-base">
-                            <p>
-                                <strong>Package:</strong>{" "}
-                                {selectedBooking.travel_package.title}
-                            </p>
-                            <p>
-                                <strong>Destination:</strong>{" "}
-                                {
-                                    selectedBooking.travel_package.destination
-                                        .name
-                                }
-                            </p>
-                            <p>
-                                <strong>Booking Date:</strong>{" "}
-                                {formattingDateWithYear(
-                                    selectedBooking.booking_date
+                        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                            <div className="space-y-4 text-sm text-gray-700 md:text-base">
+                                <p>
+                                    <strong>Package:</strong>{" "}
+                                    {selectedBooking.travel_package.title}
+                                </p>
+                                <p>
+                                    <strong>Destination:</strong>{" "}
+                                    {
+                                        selectedBooking.travel_package
+                                            .destination.name
+                                    }
+                                </p>
+                                <p>
+                                    <strong>Booking Date:</strong>{" "}
+                                    {formattingDateWithYear(
+                                        selectedBooking.booking_date
+                                    )}
+                                </p>
+                                <p>
+                                    <strong>Passengers:</strong>{" "}
+                                    {selectedBooking.passenger_count} slot
+                                </p>
+                                <p>
+                                    <strong>Down Payment:</strong>{" "}
+                                    {formattingPrice(
+                                        selectedBooking.payment.jumlah_dp
+                                    )}
+                                </p>
+                                <p>
+                                    <strong>Amount:</strong>{" "}
+                                    {formattingPrice(
+                                        selectedBooking.payment.amount
+                                    )}
+                                </p>
+                                <p>
+                                    <strong>Remaining Payment:</strong>{" "}
+                                    {formattingPrice(
+                                        selectedBooking.payment.amount -
+                                            selectedBooking.payment.jumlah_dp
+                                    )}
+                                </p>
+                                <p>
+                                    <strong>Payment Method:</strong>{" "}
+                                    {selectedBooking.payment.payment_method}
+                                </p>
+                                <p>
+                                    <strong>Payment Status:</strong>{" "}
+                                    <span
+                                        className={`px-2 py-1 text-sm font-semibold rounded-lg ${
+                                            selectedBooking.payment.status ===
+                                            "Paid"
+                                                ? "bg-blue-200 text-blue-800"
+                                                : selectedBooking.payment
+                                                      .status === "DP"
+                                                ? "bg-yellow-200 text-yellow-800"
+                                                : "bg-red-200 text-red-800"
+                                        }`}
+                                    >
+                                        {selectedBooking.payment.status}
+                                    </span>
+                                </p>
+                                <p>
+                                    <strong>Status:</strong>{" "}
+                                    <span
+                                        className={`px-2 py-1 text-sm font-semibold rounded-lg ${
+                                            selectedBooking.status ===
+                                            "Confirmed"
+                                                ? "bg-green-200 text-green-800"
+                                                : selectedBooking.status ===
+                                                  "Pending"
+                                                ? "bg-yellow-200 text-yellow-800"
+                                                : selectedBooking.status ===
+                                                  "Completed"
+                                                ? "bg-blue-200 text-blue-800"
+                                                : selectedBooking.status ===
+                                                  "Cancelled"
+                                                ? "bg-red-200 text-red-800"
+                                                : "bg-gray-200 text-gray-800"
+                                        }`}
+                                    >
+                                        {selectedBooking.status}
+                                    </span>
+                                </p>
+                            </div>
+                            <div className="space-y-4 text-sm text-gray-700 md:text-base">
+                                <p>
+                                    <strong>Start Date:</strong>{" "}
+                                    {formatDate(
+                                        selectedBooking.travel_package
+                                            .start_date
+                                    )}
+                                </p>
+                                <p>
+                                    <strong>End Date:</strong>{" "}
+                                    {formatDate(
+                                        selectedBooking.travel_package.end_date
+                                    )}
+                                </p>
+                                <p>
+                                    <strong>Car:</strong>{" "}
+                                    {selectedBooking.travel_package.car.name} [
+                                    {
+                                        selectedBooking.travel_package.car
+                                            .plate_number
+                                    }
+                                    ]
+                                </p>
+                                <p>
+                                    <strong>Driver name:</strong>{" "}
+                                    {selectedBooking.travel_package.driver}
+                                </p>
+                                {selectedBooking.payment.bukti_bayar && (
+                                    <p>
+                                        <strong>Payment Proof:</strong>
+                                        <br />
+                                        <img
+                                            src={
+                                                "/storage/" +
+                                                selectedBooking.payment
+                                                    .bukti_bayar
+                                            }
+                                            alt="Payment Proof"
+                                            className="object-cover w-full max-w-[180px] rounded-2xl"
+                                        />
+                                    </p>
                                 )}
-                            </p>
-                            <p>
-                                <strong>Passengers:</strong>{" "}
-                                {selectedBooking.passenger_count}
-                            </p>
-                            <p>
-                                <strong>Status:</strong>{" "}
-                                <span
-                                    className={`px-2 py-1 text-sm font-semibold rounded-lg ${
-                                        selectedBooking.status === "Confirmed"
-                                            ? "bg-green-200 text-green-800"
-                                            : selectedBooking.status ===
-                                              "Pending"
-                                            ? "bg-yellow-200 text-yellow-800"
-                                            : selectedBooking.status ===
-                                              "Completed"
-                                            ? "bg-blue-200 text-blue-800"
-                                            : selectedBooking.status ===
-                                              "Cancelled"
-                                            ? "bg-red-200 text-red-800"
-                                            : "bg-gray-200 text-gray-800"
-                                    }`}
-                                >
-                                    {selectedBooking.status}
-                                </span>
-                            </p>
-                            <p>
-                                <strong>Payment Amount:</strong>{" "}
-                                {formattingPrice(
-                                    selectedBooking.payment.amount
-                                )}
-                            </p>
-                            <p>
-                                <strong>Payment Method:</strong>{" "}
-                                {selectedBooking.payment.payment_method}
-                            </p>
-                            <p>
-                                <strong>Payment Status:</strong>{" "}
-                                <span
-                                    className={`px-2 py-1 text-sm font-semibold rounded-lg ${
-                                        selectedBooking.payment.status ===
-                                        "Paid"
-                                            ? "bg-blue-200 text-blue-800"
-                                            : "bg-red-200 text-red-800"
-                                    }`}
-                                >
-                                    {selectedBooking.payment.status}
-                                </span>
-                            </p>
+                            </div>
                         </div>
 
                         {/* Tombol Close */}

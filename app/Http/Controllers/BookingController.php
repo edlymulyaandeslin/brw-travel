@@ -14,7 +14,7 @@ class BookingController extends Controller
 {
     public function index()
     {
-        $bookings = Booking::with(["travelPackage.destination", "payment"])->where("user_id", Auth::user()->id)->latest()->get();
+        $bookings = Booking::with(["travelPackage.destination", "travelPackage.car", "payment"])->where("user_id", Auth::user()->id)->latest()->get();
         return Inertia::render("Booking/Index", [
             'bookings' => $bookings
         ]);

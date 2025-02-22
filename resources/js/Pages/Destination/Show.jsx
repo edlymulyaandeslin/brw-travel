@@ -101,7 +101,6 @@ export default function Show({ destination }) {
                                                 <FaCarSide className="w-5 h-5 text-blue-600" />
                                                 <span>
                                                     {pkg.car.name}{" "}
-                                                    {pkg.car.merk}{" "}
                                                     {pkg.car.tahun}
                                                 </span>
                                             </div>
@@ -130,18 +129,19 @@ export default function Show({ destination }) {
                                         </div>
 
                                         <Link
-                                            href={route(
-                                                "booking.create",
-                                                pkg.slug
-                                            )}
+                                            href={
+                                                pkg.available_capacity == 0
+                                                    ? "#"
+                                                    : route(
+                                                          "booking.create",
+                                                          pkg.slug
+                                                      )
+                                            }
                                             className={`w-full block text-center py-3 text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 ${
-                                                pkg.available_capacity === 0
+                                                pkg.available_capacity == 0
                                                     ? "opacity-50 cursor-not-allowed"
                                                     : ""
                                             }`}
-                                            disabled={
-                                                pkg.available_capacity === 0
-                                            }
                                         >
                                             {pkg.available_capacity > 0
                                                 ? "Book Now"

@@ -119,7 +119,7 @@ class BookingResource extends Resource
                             ->directory('payments')
                             ->image(),
 
-                        TextInput::make('dp')
+                        TextInput::make('jumlah_dp')
                             ->label("Jumlah Transfer")
                             ->numeric()
                             ->prefix("IDR")
@@ -158,7 +158,8 @@ class BookingResource extends Resource
                     ->label('User')
                     ->sortable(),
                 TextColumn::make('user.phone')
-                    ->label('Phone User'),
+                    ->label('Phone User')
+                    ->default("-"),
                 TextColumn::make('travelPackage.title')
                     ->label('Travel Package')
                     ->sortable(),
@@ -167,6 +168,12 @@ class BookingResource extends Resource
                     ->sortable(),
                 TextColumn::make('passenger_count')
                     ->numeric()
+                    ->sortable(),
+                TextColumn::make('payment.payment_method')
+                    ->label("Payment Method"),
+                TextColumn::make('payment.jumlah_dp')
+                    ->label("Down Payment")
+                    ->money("IDR")
                     ->sortable(),
                 TextColumn::make('payment.amount')
                     ->label("Amount")
