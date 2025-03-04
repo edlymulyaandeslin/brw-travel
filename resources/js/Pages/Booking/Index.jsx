@@ -7,6 +7,8 @@ import { FaPrint } from "react-icons/fa6";
 
 export default function Index({ bookings }) {
     const [selectedBooking, setSelectedBooking] = useState(null);
+    const appName = import.meta.env.VITE_APP_NAME;
+    console.log(appName);
 
     const handleViewBooking = (booking) => {
         setSelectedBooking(booking);
@@ -71,7 +73,7 @@ export default function Index({ bookings }) {
               <div class="receipt">
                 <header>
                   <h1>Booking Receipt</h1>
-                  <p>Your Company Name</p>
+                  <p>${appName}</p>
                   <p>Date: ${formattingDateWithYear(booking.booking_date)}</p>
                 </header>
                 <div class="details">
