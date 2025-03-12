@@ -17,99 +17,99 @@ export default function Index({ bookings }) {
     const handlePrintBooking = (booking) => {
         // Buat konten HTML dengan tampilan nota yang diperbesar
         const printContent = `
-          <html>
-            <head>
-              <title>Booking Receipt</title>
-              <style>
-                body {
-                  font-family: 'Courier New', Courier, monospace;
-                  margin: 0;
-                  padding: 40px;
-                  background: #f9f9f9;
-                  color: #333;
-                  font-size: 24px;
-                }
-                .receipt {
-                  max-width: 1000px;
-                  margin: 0 auto;
-                  background: #fff;
-                  border: 2px solid #333;
-                  padding: 40px;
-                }
-                .receipt header {
-                  text-align: center;
-                  border-bottom: 3px solid #333;
-                  padding-bottom: 20px;
-                  margin-bottom: 40px;
-                }
-                .receipt header h1 {
-                  margin: 0;
-                  font-size: 48px;
-                }
-                .receipt header p {
-                  margin: 10px 0;
-                  font-size: 28px;
-                }
-                .receipt .details p {
-                  margin: 15px 0;
-                  font-size: 28px;
-                  line-height: 1.6;
-                }
-                .receipt .details p span {
-                  display: inline-block;
-                  width: 300px;
-                  font-weight: bold;
-                }
-                .receipt footer {
-                  text-align: center;
-                  border-top: 3px solid #333;
-                  padding-top: 20px;
-                  margin-top: 40px;
-                  font-size: 24px;
-                }
-              </style>
-            </head>
-            <body>
-              <div class="receipt">
-                <header>
-                  <h1>Booking Receipt</h1>
-                  <p>${appName}</p>
-                  <p>Date: ${formattingDateWithYear(booking.booking_date)}</p>
-                </header>
-                <div class="details">
-                  <p><span>Package:</span> ${booking.travel_package.title}</p>
-                  <p><span>Destination:</span> ${
-                      booking.travel_package.destination.name
-                  }</p>
-                  <p><span>Booking Date:</span> ${formattingDateWithYear(
-                      booking.booking_date
-                  )}</p>
-                  <p><span>Passengers:</span> ${booking.passenger_count}</p>
-                  <p><span>Price:</span> ${formattingPrice(
-                      booking.travel_package.price
-                  )}/person</p>
-                  <p><span>Payment Method:</span> ${
-                      booking.payment.payment_method
-                  }</p>
-                  <p><span>Down Payment:</span> ${formattingPrice(
-                      booking.payment.jumlah_dp
-                  )}</p>
-                  <p><span>Amount:</span> ${formattingPrice(
-                      booking.payment.amount
-                  )}</p>
-                  <p><span>Remaining:</span> ${formattingPrice(
-                      booking.payment.amount - booking.payment.jumlah_dp
-                  )}</p>
-                  <p><span>Status:</span> ${booking.status}</p>
-                  <p><span>Payment Status:</span> ${booking.payment.status}</p>
-                </div>
-                <footer>
-                  <p>Thank you for your booking!</p>
-                  <p>Contact us: yourcompany@example.com</p>
-                </footer>
+        <html>
+          <head>
+            <title>Bukti Pemesanan</title>
+            <style>
+              body {
+                font-family: 'Courier New', Courier, monospace;
+                margin: 0;
+                padding: 40px;
+                background: #f9f9f9;
+                color: #333;
+                font-size: 24px;
+              }
+              .receipt {
+                max-width: 800px;
+                margin: 0 auto;
+                background: #fff;
+                border: 2px solid #333;
+                padding: 40px;
+              }
+              .receipt header {
+                text-align: center;
+                border-bottom: 3px solid #333;
+                padding-bottom: 20px;
+                margin-bottom: 40px;
+              }
+              .receipt header h1 {
+                margin: 0;
+                font-size: 48px;
+              }
+              .receipt header p {
+                margin: 10px 0;
+                font-size: 28px;
+              }
+              .receipt .details p {
+                margin: 15px 0;
+                font-size: 28px;
+                line-height: 1.6;
+              }
+              .receipt .details p span {
+                display: inline-block;
+                width: 250px;
+                font-weight: bold;
+              }
+              .receipt footer {
+                text-align: center;
+                border-top: 3px solid #333;
+                padding-top: 20px;
+                margin-top: 40px;
+                font-size: 24px;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="receipt">
+              <header>
+                <h1>Bukti Pemesanan</h1>
+                <p>${appName}</p>
+                <p>Tanggal: ${formattingDateWithYear(booking.booking_date)}</p>
+              </header>
+              <div class="details">
+                <p><span>Paket:</span> ${booking.travel_package.title}</p>
+                <p><span>Destinasi:</span> ${
+                    booking.travel_package.destination.name
+                }</p>
+                <p><span>Tanggal Pemesanan:</span> ${formattingDateWithYear(
+                    booking.booking_date
+                )}</p>
+                <p><span>Penumpang:</span> ${booking.passenger_count}</p>
+                <p><span>Harga:</span> ${formattingPrice(
+                    booking.travel_package.price
+                )}/orang</p>
+                <p><span>Metode Pembayaran:</span> ${
+                    booking.payment.payment_method
+                }</p>
+                <p><span>Uang Muka:</span> ${formattingPrice(
+                    booking.payment.jumlah_dp
+                )}</p>
+                <p><span>Jumlah:</span> ${formattingPrice(
+                    booking.payment.amount
+                )}</p>
+                <p><span>Sisa:</span> ${formattingPrice(
+                    booking.payment.amount - booking.payment.jumlah_dp
+                )}</p>
+                <p><span>Status:</span> ${booking.status}</p>
+                <p><span>Status Pembayaran:</span> ${booking.payment.status}</p>
               </div>
-            </body>
-          </html>
+              <footer>
+                <p>Terima kasih atas pemesanan Anda!</p>
+                <p>Hubungi kami: yourcompany@example.com</p>
+              </footer>
+            </div>
+          </body>
+        </html>
         `;
 
         const newWindow = window.open("", "", "width=1200,height=800");
@@ -126,49 +126,49 @@ export default function Index({ bookings }) {
 
     return (
         <Layout>
-            <Head title="My Booking" />
+            <Head title="Pemesanan Saya" />
             <div className="container p-4 mx-auto">
-                <h1 className="mb-4 text-2xl font-bold">My Bookings</h1>
+                <h1 className="mb-4 text-2xl font-bold">Pemesanan Saya</h1>
                 {bookings.length > 0 ? (
                     <div className="overflow-x-auto">
                         <table className="min-w-full overflow-hidden bg-white rounded-lg shadow-md">
                             <thead className="text-white bg-gray-800">
                                 <tr>
                                     <th className="px-4 py-2 text-left">
-                                        Travel Package
+                                        Paket Perjalanan
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Destination
+                                        Destinasi
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Booking Date
+                                        Tanggal Pemesanan
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Passengers
+                                        Penumpang
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Travel Price
+                                        Harga Perjalanan
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Payment Method
+                                        Metode Pembayaran
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Down Payment
+                                        Uang Muka
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Amount
+                                        Jumlah
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Remaining Payment
+                                        Sisa Pembayaran
                                     </th>
                                     <th className="px-4 py-2 text-left">
                                         Status
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Payment Status
+                                        Status Pembayaran
                                     </th>
                                     <th className="px-4 py-2 text-left">
-                                        Action
+                                        Aksi
                                     </th>
                                 </tr>
                             </thead>
@@ -220,7 +220,6 @@ export default function Index({ bookings }) {
                                                     booking.payment.jumlah_dp
                                             )}
                                         </td>
-
                                         <td className="px-4 py-2">
                                             <span
                                                 className={`px-2 py-1 text-sm font-semibold rounded-lg ${
@@ -287,13 +286,15 @@ export default function Index({ bookings }) {
                         </table>
                     </div>
                 ) : (
-                    <p className="text-gray-500">No bookings found.</p>
+                    <p className="text-gray-500">
+                        Tidak ada pemesanan yang ditemukan.
+                    </p>
                 )}
             </div>
             {selectedBooking && (
                 <div className="fixed inset-0 flex items-center justify-center overflow-y-auto bg-black bg-opacity-50">
                     <div className="relative w-full max-h-[90vh] p-4 overflow-y-auto bg-white shadow-lg md:max-w-3xl md:rounded-lg md:p-6">
-                        {/* Tombol Close */}
+                        {/* Tombol Tutup */}
                         <button
                             onClick={closeModal}
                             className="absolute text-gray-600 top-4 right-4 hover:text-gray-900"
@@ -303,58 +304,58 @@ export default function Index({ bookings }) {
 
                         {/* Header */}
                         <h2 className="mb-6 text-2xl font-bold text-center">
-                            Booking Details
+                            Detail Pemesanan
                         </h2>
 
                         {/* Konten Modal */}
                         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                             <div className="space-y-4 text-sm text-gray-700 md:text-base">
                                 <p>
-                                    <strong>Package:</strong>{" "}
+                                    <strong>Paket:</strong>{" "}
                                     {selectedBooking.travel_package.title}
                                 </p>
                                 <p>
-                                    <strong>Destination:</strong>{" "}
+                                    <strong>Destinasi:</strong>{" "}
                                     {
                                         selectedBooking.travel_package
                                             .destination.name
                                     }
                                 </p>
                                 <p>
-                                    <strong>Booking Date:</strong>{" "}
+                                    <strong>Tanggal Pemesanan:</strong>{" "}
                                     {formattingDateWithYear(
                                         selectedBooking.booking_date
                                     )}
                                 </p>
                                 <p>
-                                    <strong>Passengers:</strong>{" "}
+                                    <strong>Penumpang:</strong>{" "}
                                     {selectedBooking.passenger_count} slot
                                 </p>
                                 <p>
-                                    <strong>Down Payment:</strong>{" "}
+                                    <strong>Uang Muka:</strong>{" "}
                                     {formattingPrice(
                                         selectedBooking.payment.jumlah_dp
                                     )}
                                 </p>
                                 <p>
-                                    <strong>Amount:</strong>{" "}
+                                    <strong>Jumlah:</strong>{" "}
                                     {formattingPrice(
                                         selectedBooking.payment.amount
                                     )}
                                 </p>
                                 <p>
-                                    <strong>Remaining Payment:</strong>{" "}
+                                    <strong>Sisa Pembayaran:</strong>{" "}
                                     {formattingPrice(
                                         selectedBooking.payment.amount -
                                             selectedBooking.payment.jumlah_dp
                                     )}
                                 </p>
                                 <p>
-                                    <strong>Payment Method:</strong>{" "}
+                                    <strong>Metode Pembayaran:</strong>{" "}
                                     {selectedBooking.payment.payment_method}
                                 </p>
                                 <p>
-                                    <strong>Payment Status:</strong>{" "}
+                                    <strong>Status Pembayaran:</strong>{" "}
                                     <span
                                         className={`px-2 py-1 text-sm font-semibold rounded-lg ${
                                             selectedBooking.payment.status ===
@@ -394,34 +395,34 @@ export default function Index({ bookings }) {
                             </div>
                             <div className="space-y-4 text-sm text-gray-700 md:text-base">
                                 <p>
-                                    <strong>Start Date:</strong>{" "}
+                                    <strong>Tanggal Mulai:</strong>{" "}
                                     {formatDate(
                                         selectedBooking.travel_package
                                             .start_date
                                     )}
                                 </p>
                                 <p>
-                                    <strong>End Date:</strong>{" "}
+                                    <strong>Tanggal Selesai:</strong>{" "}
                                     {formatDate(
                                         selectedBooking.travel_package.end_date
                                     )}
                                 </p>
                                 <p>
-                                    <strong>Car:</strong>{" "}
+                                    <strong>Mobil:</strong>{" "}
                                     {selectedBooking.travel_package.car.name} [
                                     {
                                         selectedBooking.travel_package.car
                                             .plate_number
-                                    }
+                                    }{" "}
                                     ]
                                 </p>
                                 <p>
-                                    <strong>Driver name:</strong>{" "}
+                                    <strong>Nama Sopir:</strong>{" "}
                                     {selectedBooking.travel_package.driver}
                                 </p>
                                 {selectedBooking.payment.bukti_bayar && (
                                     <p>
-                                        <strong>Payment Proof:</strong>
+                                        <strong>Bukti Pembayaran:</strong>
                                         <br />
                                         <img
                                             src={
@@ -429,7 +430,7 @@ export default function Index({ bookings }) {
                                                 selectedBooking.payment
                                                     .bukti_bayar
                                             }
-                                            alt="Payment Proof"
+                                            alt="Bukti Pembayaran"
                                             className="object-cover w-full max-w-[180px] rounded-2xl"
                                         />
                                     </p>
@@ -437,13 +438,13 @@ export default function Index({ bookings }) {
                             </div>
                         </div>
 
-                        {/* Tombol Close */}
+                        {/* Tombol Tutup */}
                         <div className="flex justify-center mt-6">
                             <button
                                 onClick={closeModal}
                                 className="px-4 py-2 text-white transition duration-300 bg-red-500 rounded-lg hover:bg-red-700"
                             >
-                                Close
+                                Tutup
                             </button>
                         </div>
                     </div>

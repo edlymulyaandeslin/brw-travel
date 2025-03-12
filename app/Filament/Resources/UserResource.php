@@ -20,28 +20,31 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = 'Management';
-
+    protected static ?string $navigationGroup = 'Manajemen';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label('Nama')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('email')
+                    ->label('Email')
                     ->email()
                     ->unique(User::class, "email", ignoreRecord: true)
-                    ->required()
                     ->maxLength(255),
                 TextInput::make('phone')
+                    ->label('Telepon')
                     ->required()
                     ->maxLength(20),
                 Select::make("roles")
+                    ->label('Peran')
                     ->relationship("roles", "name")
                     ->required(),
                 TextInput::make('password')
+                    ->label('Kata Sandi')
                     ->password()
                     ->required()
                     ->maxLength(255),
@@ -53,18 +56,23 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('phone'),
+                Tables\Columns\TextColumn::make('phone')
+                    ->label('Telepon'),
                 Tables\Columns\BadgeColumn::make('roles.name')
-                    ->label('Role')
+                    ->label('Peran')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

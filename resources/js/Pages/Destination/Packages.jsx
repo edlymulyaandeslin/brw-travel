@@ -6,28 +6,28 @@ import { ArrowLeft } from "react-feather";
 export default function Packages({ travelPackages }) {
     return (
         <Layout>
-            <Head title={"Destination Packages"} />
+            <Head title={"Paket Destinasi"} />
 
-            {/* Back Button */}
+            {/* Tombol Kembali */}
             <div className="container px-4 pt-6 mx-auto">
                 <Link
                     href="/"
                     className="inline-flex items-center text-blue-600 transition-colors hover:text-blue-800"
                 >
                     <ArrowLeft className="w-5 h-5 mr-2" />
-                    Back to Home
+                    Kembali ke Beranda
                 </Link>
             </div>
 
             <div className="container px-4 py-8 mx-auto">
                 <h1 className="mb-8 text-4xl font-bold text-gray-800">
-                    Travel Packages
+                    Paket Perjalanan
                 </h1>
 
                 {travelPackages.length === 0 ? (
                     <div className="py-12 text-center">
                         <p className="text-lg text-gray-600">
-                            No packages found
+                            Tidak ada paket yang ditemukan
                         </p>
                     </div>
                 ) : (
@@ -37,7 +37,7 @@ export default function Packages({ travelPackages }) {
                                 key={pkg.id}
                                 className="overflow-hidden transition-shadow duration-300 bg-white rounded-lg shadow-md hover:shadow-lg"
                             >
-                                {/* Image Section */}
+                                {/* Bagian Gambar */}
                                 <div className="relative bg-gray-200 aspect-video">
                                     <img
                                         src={
@@ -66,7 +66,7 @@ export default function Packages({ travelPackages }) {
 
                                     <div className="flex items-start justify-between mb-2">
                                         <h3 className="text-sm font-semibold text-gray-500">
-                                            Destination: {pkg.destination.name}
+                                            Destinasi: {pkg.destination.name}
                                         </h3>
                                     </div>
 
@@ -83,7 +83,7 @@ export default function Packages({ travelPackages }) {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        <span>{pkg.duration_days} Days</span>
+                                        <span>{pkg.duration_days} Hari</span>
                                     </div>
 
                                     <p className="mb-4 text-sm text-gray-600 line-clamp-3">
@@ -92,7 +92,7 @@ export default function Packages({ travelPackages }) {
 
                                     <div className="pt-3 space-y-2 border-t">
                                         <div className="flex justify-between text-sm">
-                                            <span>Available:</span>
+                                            <span>Tersedia:</span>
                                             <span
                                                 className={`font-semibold ${
                                                     pkg.available_capacity /
@@ -125,16 +125,16 @@ export default function Packages({ travelPackages }) {
 
                                         <div className="text-sm text-gray-600">
                                             <p>
-                                                Date:{" "}
+                                                Tanggal:{" "}
                                                 {formatDate(pkg.start_date)} -{" "}
                                                 {formatDate(pkg.end_date)}
                                             </p>
                                             <p className="mt-1">
-                                                Tour Guide: {pkg.agent}
+                                                Pemandu Wisata: {pkg.driver}
                                             </p>
                                         </div>
 
-                                        {/* Dynamic Booking Button */}
+                                        {/* Tombol Pemesanan Dinamis */}
                                         <Link
                                             href={route(
                                                 "booking.create",
@@ -150,8 +150,8 @@ export default function Packages({ travelPackages }) {
                                             }
                                         >
                                             {pkg.available_capacity > 0
-                                                ? "Book Now"
-                                                : "Fully Booked"}
+                                                ? "Pesan Sekarang"
+                                                : "Penuh"}
                                         </Link>
                                     </div>
                                 </div>

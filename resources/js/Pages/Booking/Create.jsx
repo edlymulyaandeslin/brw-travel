@@ -68,10 +68,10 @@ export default function Create({ travelPackage, bookingSeats }) {
 
     return (
         <Layout>
-            <Head title="Create Booking" />
+            <Head title="Buat Pemesanan" />
             <div className="container p-6 mx-auto">
                 <h1 className="mb-6 text-2xl font-bold text-center">
-                    Create Booking
+                    Buat Pemesanan
                 </h1>
 
                 {/* Card Menampilkan Data Travel Package */}
@@ -94,7 +94,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                             {/* Price */}
                             <div>
                                 <p className="text-xs text-gray-500 uppercase">
-                                    Price
+                                    Harga
                                 </p>
                                 <p className="text-lg font-medium text-gray-700">
                                     {formattingPrice(travelPackage.price)}
@@ -103,16 +103,16 @@ export default function Create({ travelPackage, bookingSeats }) {
                             {/* Duration */}
                             <div>
                                 <p className="text-xs text-gray-500 uppercase">
-                                    Duration
+                                    Durasi
                                 </p>
                                 <p className="text-lg font-medium text-gray-700">
-                                    {travelPackage.duration_days} days
+                                    {travelPackage.duration_days} hari
                                 </p>
                             </div>
                             {/* Dates */}
                             <div className="sm:col-span-2">
                                 <p className="text-xs text-gray-500 uppercase">
-                                    Dates
+                                    Tanggal
                                 </p>
                                 <p className="text-lg font-medium text-gray-700">
                                     {formatDate(travelPackage.start_date)} -{" "}
@@ -122,7 +122,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                             {/* Capacity & Available Capacity with Progress Bar */}
                             <div className="sm:col-span-2">
                                 <p className="text-xs text-gray-500 uppercase">
-                                    Capacity
+                                    Kapasitas
                                 </p>
                                 <div className="relative pt-1">
                                     <div className="flex h-2 mb-2 overflow-hidden text-xs bg-gray-200 rounded">
@@ -140,13 +140,13 @@ export default function Create({ travelPackage, bookingSeats }) {
                                     </div>
                                     <div className="flex items-center justify-between">
                                         <span className="text-sm font-medium text-gray-700">
-                                            Booked:{" "}
+                                            Terpesan:{" "}
                                             {travelPackage.capacity -
                                                 travelPackage.available_capacity}{" "}
                                             / {travelPackage.capacity}
                                         </span>
                                         <span className="text-sm font-medium text-green-600">
-                                            Available:{" "}
+                                            Tersedia:{" "}
                                             {travelPackage.available_capacity}
                                         </span>
                                     </div>
@@ -156,7 +156,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                             {/* Driver */}
                             <div className="sm:col-span-2">
                                 <p className="text-xs text-gray-500 uppercase">
-                                    Driver
+                                    Sopir
                                 </p>
                                 <p className="text-lg font-medium text-gray-700">
                                     {travelPackage.driver}
@@ -166,7 +166,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                             {/* Car */}
                             <div className="sm:col-span-2">
                                 <p className="text-xs text-gray-500 uppercase">
-                                    Car
+                                    Mobil
                                 </p>
                                 <p className="text-lg font-medium text-gray-700">
                                     {travelPackage.car.merk}{" "}
@@ -191,7 +191,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                             {/* Passenger Count */}
                             <div className="mb-4">
                                 <label className="block mb-2 font-semibold">
-                                    Passenger Count
+                                    Jumlah Penumpang
                                 </label>
                                 <input
                                     type="number"
@@ -211,7 +211,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                             {/* Price (Readonly) */}
                             <div className="mb-4">
                                 <label className="block mb-2 font-semibold">
-                                    Price
+                                    Harga
                                 </label>
                                 <input
                                     type="text"
@@ -224,7 +224,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                             {/* Notes */}
                             <div className="mb-4">
                                 <label className="block mb-2 font-semibold">
-                                    Notes
+                                    Catatan
                                 </label>
                                 <textarea
                                     type="text"
@@ -312,7 +312,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                                                     />
                                                     <label
                                                         htmlFor={`seat-${index}`}
-                                                        className={`flex items-center justify-center p-3 text-sm font-medium transition-all duration-300 border border-gray-300 rounded-md   ${
+                                                        className={`flex items-center justify-center p-3 text-sm font-medium transition-all duration-300 border border-gray-300 rounded-md ${
                                                             isBooked
                                                                 ? "cursor-not-allowed bg-gray-300"
                                                                 : "cursor-pointer hover:border-blue-500 peer-checked:border-2 peer-checked:border-blue-500"
@@ -333,7 +333,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                             {/* Total Amount (Readonly) */}
                             <div className="mb-4">
                                 <label className="block mb-2 font-semibold">
-                                    Total Amount
+                                    Jumlah Total
                                 </label>
                                 <input
                                     type="text"
@@ -346,7 +346,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                             {/* Payment Method */}
                             <div className="mb-4">
                                 <label className="block mb-2 font-semibold">
-                                    Payment Method
+                                    Metode Pembayaran
                                 </label>
                                 <select
                                     value={data.payment_method}
@@ -369,7 +369,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                                     required
                                 >
                                     <option value={""}>
-                                        Select Payment Method
+                                        Pilih Metode Pembayaran
                                     </option>
                                     <option value="Cash">Cash</option>
                                     <option value="Transfer">Transfer</option>
@@ -391,7 +391,7 @@ export default function Create({ travelPackage, bookingSeats }) {
                                     {/* Bukti TF */}
                                     <div className="mb-4">
                                         <label className="block mb-2 font-semibold">
-                                            Upload Bukti Transfer
+                                            Unggah Bukti Transfer
                                         </label>
                                         <input
                                             type="file"
@@ -435,7 +435,9 @@ export default function Create({ travelPackage, bookingSeats }) {
                             disabled={processing}
                             className="w-full px-4 py-2 text-white transition duration-300 bg-blue-600 rounded-md hover:bg-blue-800 disabled:bg-gray-400 md:w-1/2"
                         >
-                            {processing ? "Processing..." : "Create Booking"}
+                            {processing
+                                ? "Sedang Diproses..."
+                                : "Buat Pemesanan"}
                         </button>
                     </div>
                 </form>

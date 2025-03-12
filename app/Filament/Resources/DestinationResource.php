@@ -30,13 +30,14 @@ class DestinationResource extends Resource
     protected static ?string $model = Destination::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-home-modern';
-    protected static ?string $navigationGroup = 'Travelling';
+    protected static ?string $navigationGroup = 'Perjalanan';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label('Nama Destinasi')
                     ->required()
                     ->maxLength(255)
                     ->live(true)
@@ -44,15 +45,17 @@ class DestinationResource extends Resource
                         $set('slug', Str::slug($state));
                     }),
                 TextInput::make('slug')
+                    ->label('Slug')
                     ->required()
                     ->disabled()
                     ->dehydrated()
                     ->unique(Destination::class, 'slug', ignoreRecord: true),
                 FileUpload::make('image')
-                    ->label("Image Destination")
+                    ->label("Gambar Destinasi")
                     ->directory('destinations')
                     ->image(),
                 Textarea::make('description')
+                    ->label('Deskripsi')
                     ->required()
                     ->columnSpanFull(),
             ]);
@@ -63,16 +66,20 @@ class DestinationResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Nama Destinasi')
                     ->searchable(),
                 TextColumn::make('slug')
+                    ->label('Slug')
                     ->searchable(),
                 ImageColumn::make('image')
-                    ->label('Image'),
+                    ->label('Gambar'),
                 TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Diperbarui')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

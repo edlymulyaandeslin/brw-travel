@@ -14,22 +14,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = Role::create(['name' => 'super_admin']);
-
         Role::create(['name' => 'customer']);
 
-        $user = User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com'
-        ]);
+        // $admin = Role::create(['name' => 'super_admin']);
 
-        $user->syncRoles($admin->name);
+        // $user = User::factory()->create([
+        //     'name' => 'Admin',
+        //     'phone' => '081234567890'
+        // ]);
 
-        $this->call([
-            CategorySeeder::class,
-            CarSeeder::class,
-            DestinationSeeder::class,
-            TravelPackageSeeder::class,
-        ]);
+        // $user->syncRoles($admin->name);
+
+        // $this->call([
+        //     CategorySeeder::class,
+        //     CarSeeder::class,
+        //     DestinationSeeder::class,
+        //     TravelPackageSeeder::class,
+        // ]);
     }
 }

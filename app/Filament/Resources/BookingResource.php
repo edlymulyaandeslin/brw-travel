@@ -39,20 +39,22 @@ class BookingResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
-    protected static ?string $navigationGroup = 'Transaction';
+    protected static ?string $navigationGroup = 'Transaksi';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make('Booking Detail')
+                Section::make('Detail Pemesanan')
                     ->schema([
                         Select::make('user_id')
+                            ->label('Pengguna')
                             ->required()
                             ->relationship("user", "name")
                             ->disabled(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord),
 
                         Select::make('travel_package_id')
+                            ->label('Paket Perjalanan')
                             ->required()
                             ->relationship("travelPackage", "title")
                             ->live()
@@ -67,10 +69,12 @@ class BookingResource extends Resource
                             ->disabled(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord),
 
                         DatePicker::make('booking_date')
+                            ->label('Tanggal Pemesanan')
                             ->required()
                             ->disabled(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord),
 
                         TextInput::make('passenger_count')
+                            ->label('Jumlah Penumpang')
                             ->required()
                             ->numeric()
                             ->default(1)
@@ -84,22 +88,24 @@ class BookingResource extends Resource
                             }),
 
                         Select::make('status')
+                            ->label('Status Pemesanan')
                             ->required()
                             ->options([
-                                "Pending"   => Booking::PENDING,
-                                "Confirmed" => Booking::CONFIRMED,
-                                "Completed" => Booking::COMPLETED,
-                                "Cancelled" => Booking::CANCELLED,
+                                Booking::PENDING    => Booking::PENDING,
+                                Booking::CONFIRMED  => Booking::CONFIRMED,
+                                Booking::COMPLETED  => Booking::COMPLETED,
+                                Booking::CANCELLED  => Booking::CANCELLED,
                             ])
-                            ->default("Pending"),
+                            ->default("Menunggu"),
                         Textarea::make("notes")
-                            ->label("Notes")
+                            ->label("Catatan")
                     ])->columns(2),
 
-                Section::make('Payment Detail')
+                Section::make('Detail Pembayaran')
                     ->relationship("payment")
                     ->schema([
                         TextInput::make('amount')
+                            ->label('Jumlah')
                             ->required()
                             ->numeric()
                             ->prefix("IDR")
@@ -108,6 +114,7 @@ class BookingResource extends Resource
                             ->dehydrated(),
 
                         Select::make('payment_method')
+                            ->label('Metode Pembayaran')
                             ->required()
                             ->options([
                                 Payment::CASH     => Payment::CASH,
@@ -115,7 +122,7 @@ class BookingResource extends Resource
                             ]),
 
                         FileUpload::make('bukti_bayar')
-                            ->label("Bukti Bayar")
+                            ->label("Bukti Pembayaran")
                             ->directory('payments')
                             ->image(),
 
@@ -125,26 +132,25 @@ class BookingResource extends Resource
                             ->prefix("IDR")
                             ->default(0),
 
-
                         Select::make('status')
-                            ->label("Payment Status")
+                            ->label("Status Pembayaran")
                             ->required()
                             ->options([
-                                Payment::DP     => Payment::DP,
-                                Payment::PAID   => Payment::PAID,
-                                Payment::UNPAID => Payment::UNPAID,
+                                Payment::DP     =>  Payment::DP,
+                                Payment::PAID   =>  Payment::PAID,
+                                Payment::UNPAID =>  Payment::UNPAID,
                             ]),
                     ]),
 
-                Section::make('Booking Seat')
+                Section::make('Kursi Pemesanan')
                     ->schema([
                         Repeater::make('seats')
                             ->relationship("seats")
                             ->schema([
                                 TextInput::make('seat_number')
+                                    ->label("Nomor Kursi")
                                     ->maxValue(6)
                                     ->required()
-                                // ->dehydrated()
                             ])
                     ])
             ]);
@@ -155,49 +161,54 @@ class BookingResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('user.name')
-                    ->label('User')
+                    ->label('Pengguna')
                     ->sortable(),
                 TextColumn::make('user.phone')
-                    ->label('Phone User')
+                    ->label('Telepon Pengguna')
                     ->default("-"),
                 TextColumn::make('travelPackage.title')
-                    ->label('Travel Package')
+                    ->label('Paket Perjalanan')
                     ->sortable(),
                 TextColumn::make('booking_date')
+                    ->label('Tanggal Pemesanan')
                     ->date()
                     ->sortable(),
                 TextColumn::make('passenger_count')
+                    ->label('Jumlah Penumpang')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('payment.payment_method')
-                    ->label("Payment Method"),
+                    ->label("Metode Pembayaran"),
                 TextColumn::make('payment.jumlah_dp')
-                    ->label("Down Payment")
+                    ->label("Uang Muka")
                     ->money("IDR")
                     ->sortable(),
                 TextColumn::make('payment.amount')
-                    ->label("Amount")
+                    ->label("Jumlah")
                     ->money("IDR")
                     ->sortable(),
                 SelectColumn::make('status')
+                    ->label('Status Pemesanan')
                     ->options([
-                        "Pending"   => Booking::PENDING,
-                        "Confirmed" => Booking::CONFIRMED,
-                        "Completed" => Booking::COMPLETED,
-                        "Cancelled" => Booking::CANCELLED,
+                        Booking::PENDING    => Booking::PENDING,
+                        Booking::CONFIRMED  => Booking::CONFIRMED,
+                        Booking::COMPLETED  => Booking::COMPLETED,
+                        Booking::CANCELLED  => Booking::CANCELLED,
                     ]),
                 SelectColumn::make('payment.status')
-                    ->label("Payment Status")
+                    ->label("Status Pembayaran")
                     ->options([
-                        Payment::DP => Payment::DP,
-                        Payment::PAID => Payment::PAID,
+                        Payment::DP     => Payment::DP,
+                        Payment::PAID   => Payment::PAID,
                         Payment::UNPAID => Payment::UNPAID,
                     ]),
                 TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Diperbarui')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

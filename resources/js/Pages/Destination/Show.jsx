@@ -12,20 +12,20 @@ export default function Show({ destination }) {
         <Layout>
             <Head title={destination.name} />
 
-            {/* Back Button */}
+            {/* Tombol Kembali */}
             <div className="container px-4 py-6 mx-auto">
                 <Link
                     href="/#destination"
                     className="inline-flex items-center text-blue-600 transition-colors hover:text-blue-800"
                 >
                     <ArrowLeft className="w-5 h-5 mr-2" />
-                    Back to Destinations
+                    Kembali ke Destinasi
                 </Link>
             </div>
 
-            {/* Main Content */}
+            {/* Konten Utama */}
             <main className="container px-4 pb-12 mx-auto">
-                {/* Destination Header */}
+                {/* Header Destinasi */}
                 <div className="mb-8">
                     <img
                         src={
@@ -46,10 +46,10 @@ export default function Show({ destination }) {
                     </div>
                 </div>
 
-                {/* Available Packages */}
+                {/* Paket Perjalanan Tersedia */}
                 <div className="p-6 bg-white shadow-sm rounded-2xl">
                     <h2 className="mb-6 text-2xl font-semibold">
-                        Available Travel Packages
+                        Paket Perjalanan Tersedia
                     </h2>
 
                     <div className="space-y-6">
@@ -59,7 +59,7 @@ export default function Show({ destination }) {
                                 className="p-6 transition-shadow border rounded-xl hover:shadow-md"
                             >
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                                    {/* Package Info */}
+                                    {/* Informasi Paket */}
                                     <div className="md:col-span-2">
                                         <h3 className="mb-2 text-xl font-semibold">
                                             {pkg.title}
@@ -72,14 +72,12 @@ export default function Show({ destination }) {
                                             <div className="flex items-center space-x-2">
                                                 <Calendar className="w-5 h-5 text-blue-600" />
                                                 <span>
-                                                    {pkg.duration_days} Days
+                                                    {pkg.duration_days} Hari
                                                 </span>
                                             </div>
                                             <div className="flex items-center space-x-2">
                                                 <Users className="w-5 h-5 text-blue-600" />
-                                                <span>
-                                                    {pkg.capacity} Slots
-                                                </span>
+                                                <span>{pkg.capacity} Slot</span>
                                             </div>
                                             <div className="flex items-center space-x-2">
                                                 <Clock className="w-5 h-5 text-blue-600" />
@@ -90,7 +88,7 @@ export default function Show({ destination }) {
                                                         )}
                                                     </span>
                                                     <span className="text-xs text-gray-500">
-                                                        to{" "}
+                                                        sampai{" "}
                                                         {formatDate(
                                                             pkg.end_date
                                                         )}
@@ -110,21 +108,21 @@ export default function Show({ destination }) {
                                         </p>
                                     </div>
 
-                                    {/* Booking Section */}
+                                    {/* Bagian Pemesanan */}
                                     <div className="space-y-4">
                                         <div className="text-right">
                                             <span className="text-2xl font-bold text-blue-600">
                                                 Rp {pkg.price.toLocaleString()}
                                             </span>
                                             <span className="text-gray-600">
-                                                / person
+                                                / orang
                                             </span>
                                         </div>
 
                                         <div className="text-right">
                                             <span className="text-sm font-bold text-green-600">
-                                                {pkg.available_capacity} slots
-                                                available
+                                                {pkg.available_capacity} slot
+                                                tersedia
                                             </span>
                                         </div>
 
@@ -144,8 +142,8 @@ export default function Show({ destination }) {
                                             }`}
                                         >
                                             {pkg.available_capacity > 0
-                                                ? "Book Now"
-                                                : "Fully Booked"}
+                                                ? "Pesan Sekarang"
+                                                : "Penuh"}
                                         </Link>
                                     </div>
                                 </div>
@@ -154,7 +152,7 @@ export default function Show({ destination }) {
                         {packages.length === 0 && (
                             <div className="py-12 text-center">
                                 <p className="text-lg text-gray-600">
-                                    No packages available
+                                    Tidak ada paket yang tersedia
                                 </p>
                             </div>
                         )}

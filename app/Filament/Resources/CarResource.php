@@ -27,47 +27,54 @@ class CarResource extends Resource
     protected static ?string $model = Car::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cube-transparent';
-    protected static ?string $navigationGroup = 'Travelling';
+    protected static ?string $navigationGroup = 'Perjalanan';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 FileUpload::make('image')
+                    ->label('Gambar')
                     ->directory("cars")
                     ->image()
                     ->columnSpanFull(),
                 TextInput::make('name')
+                    ->label('Nama')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('merk')
+                    ->label('Merk')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('tahun')
+                    ->label('Tahun')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('color')
-                    ->label("Warna")
+                    ->label('Warna')
                     ->required()
                     ->maxLength(255),
                 Select::make('transmission')
+                    ->label('Transmisi')
                     ->required()
                     ->options([
-                        Car::MANUAL => Car::MANUAL,
-                        Car::AUTOMATIC => Car::AUTOMATIC,
+                        Car::MANUAL    => "Manual",
+                        Car::AUTOMATIC => "Otomatis",
                     ]),
                 TextInput::make('fuel_type')
-                    ->label("Bahan Bakar")
+                    ->label('Bahan Bakar')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('seat_count')
-                    ->label("Jumlah Kursi")
+                    ->label('Jumlah Kursi')
                     ->required()
                     ->numeric(),
                 TextInput::make('jarak_tempuh')
+                    ->label('Jarak Tempuh')
                     ->required()
                     ->numeric(),
                 TextInput::make('plate_number')
+                    ->label('Nomor Polisi')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -80,30 +87,41 @@ class CarResource extends Resource
                 ImageColumn::make('image')
                     ->label("Gambar"),
                 TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable(),
                 TextColumn::make('merk')
+                    ->label('Merk')
                     ->searchable(),
                 TextColumn::make('tahun')
+                    ->label('Tahun')
                     ->searchable(),
                 TextColumn::make('color')
+                    ->label('Warna')
                     ->searchable(),
                 TextColumn::make('transmission')
+                    ->label('Transmisi')
                     ->searchable(),
                 TextColumn::make('fuel_type')
+                    ->label('Bahan Bakar')
                     ->searchable(),
                 TextColumn::make('seat_count')
+                    ->label('Jumlah Kursi')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('jarak_tempuh')
+                    ->label('Jarak Tempuh')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('plate_number')
+                    ->label('Nomor Polisi')
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Diperbarui')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

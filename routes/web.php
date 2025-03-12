@@ -37,7 +37,7 @@ Route::post("/find-packages", function (Request $request) {
     $travelPackages = TravelPackage::with(["destination", "category"])->whereHas("destination", function ($query) use ($destination) {
         $query->where("name", "like", "%$destination%");
     })->whereBetween("start_date", [$check_in, $check_out])
-        ->where("capacity", ">=", $travelers)
+        ->where("available_capacity", ">=", $travelers)
         ->get();
 
     return Inertia::render("Destination/Packages", [

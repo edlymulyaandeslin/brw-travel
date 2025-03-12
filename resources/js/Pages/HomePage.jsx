@@ -51,13 +51,13 @@ export default function HomePage({ destinations }) {
 
     return (
         <Layout>
-            <Head title="Home" />
+            <Head title="Beranda" />
 
-            {/* Hero Section */}
+            {/* Bagian Hero */}
             <div className="relative h-[600px] bg-gray-900">
                 <img
                     src={"/img/hero-background.jpeg"}
-                    alt="Travel"
+                    alt="Perjalanan"
                     className="object-cover w-full h-full opacity-70"
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -66,7 +66,7 @@ export default function HomePage({ destinations }) {
                             Jelajahi Dunia dengan Kemudahan
                         </h1>
 
-                        {/* Search Form */}
+                        {/* Formulir Pencarian */}
                         <form
                             className="p-6 bg-white rounded-lg shadow-2xl"
                             onSubmit={handleFindPackages}
@@ -89,7 +89,7 @@ export default function HomePage({ destinations }) {
                                 </div>
                                 <div>
                                     <label className="block mb-2 text-sm font-bold text-gray-700">
-                                        Check-in
+                                        Tanggal Masuk
                                     </label>
                                     <input
                                         type="datetime-local"
@@ -103,7 +103,7 @@ export default function HomePage({ destinations }) {
                                 </div>
                                 <div>
                                     <label className="block mb-2 text-sm font-bold text-gray-700">
-                                        Check-out
+                                        Tanggal Keluar
                                     </label>
                                     <input
                                         type="datetime-local"
@@ -117,7 +117,7 @@ export default function HomePage({ destinations }) {
                                 </div>
                                 <div>
                                     <label className="block mb-2 text-sm font-bold text-gray-700">
-                                        Travelers
+                                        Jumlah Wisatawan
                                     </label>
                                     <input
                                         type="number"
@@ -142,7 +142,7 @@ export default function HomePage({ destinations }) {
                 </div>
             </div>
 
-            {/* Features Section */}
+            {/* Bagian Fitur */}
             <div className="px-4 py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
                     {features.map((feature, index) => (
@@ -174,7 +174,7 @@ export default function HomePage({ destinations }) {
                 </div>
             </div>
 
-            {/* Popular Destinations */}
+            {/* Destinasi Populer */}
             <div className="py-16 bg-gray-100" id="destination">
                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <h2 className="mb-12 text-3xl font-bold text-center">
@@ -217,20 +217,20 @@ export default function HomePage({ destinations }) {
                 </div>
             </div>
 
-            {/* About Our Company */}
+            {/* Tentang Kami */}
             <div className="py-16 bg-white" id="about">
                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-                        {/* Image Section */}
+                        {/* Bagian Gambar */}
                         <div className="overflow-hidden rounded-lg shadow-lg">
                             <img
                                 src="/img/about-2.jpeg" // Ganti dengan gambar tentang perusahaan Anda
-                                alt="About Us"
+                                alt="Tentang Kami"
                                 className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                             />
                         </div>
 
-                        {/* Content Section */}
+                        {/* Bagian Konten */}
                         <div className="flex flex-col justify-center">
                             <h2 className="mb-6 text-3xl font-bold text-gray-800">
                                 Tentang Kami
@@ -265,14 +265,14 @@ export default function HomePage({ destinations }) {
                 </div>
             </div>
 
-            {/* Contact Company */}
+            {/* Hubungi Kami */}
             <div className="py-16 bg-gray-100" id="contact">
                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <h2 className="mb-12 text-3xl font-bold text-center text-gray-800">
                         Hubungi Kami
                     </h2>
                     <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-                        {/* Contact Form */}
+                        {/* Formulir Kontak */}
                         <div className="p-8 bg-white rounded-lg shadow-md">
                             <h3 className="mb-6 text-2xl font-semibold text-gray-800">
                                 Kirim Pesan
@@ -317,7 +317,7 @@ export default function HomePage({ destinations }) {
                             </form>
                         </div>
 
-                        {/* Contact Information */}
+                        {/* Informasi Kontak */}
                         <div className="p-8 bg-white rounded-lg shadow-md">
                             <h3 className="mb-6 text-2xl font-semibold text-gray-800">
                                 Informasi Kontak
