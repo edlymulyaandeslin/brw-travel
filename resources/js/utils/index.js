@@ -16,9 +16,9 @@ export const formattingDateWithoutYear = (date) => {
 };
 
 export const formattingDateWithYear = (date) => {
-    return new Date(date).toLocaleDateString("en-US", {
-        month: "short",
+    return new Date(date).toLocaleDateString("id-ID", {
         day: "numeric",
+        month: "long",
         year: "numeric",
     });
 };

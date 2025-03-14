@@ -37,8 +37,7 @@ class BookingResource extends Resource
 {
     protected static ?string $model = Booking::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
-
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
     protected static ?string $navigationGroup = 'Transaksi';
 
     public static function form(Form $form): Form
@@ -96,7 +95,7 @@ class BookingResource extends Resource
                                 Booking::COMPLETED  => Booking::COMPLETED,
                                 Booking::CANCELLED  => Booking::CANCELLED,
                             ])
-                            ->default("Menunggu"),
+                            ->default("Pending"),
                         Textarea::make("notes")
                             ->label("Catatan")
                     ])->columns(2),

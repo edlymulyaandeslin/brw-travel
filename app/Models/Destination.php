@@ -35,4 +35,8 @@ class Destination extends Model
     {
         return $this->hasMany(TravelPackage::class);
     }
+    public function cargoPackages()
+    {
+        return $this->hasMany(CargoPackage::class);
+    }
 }

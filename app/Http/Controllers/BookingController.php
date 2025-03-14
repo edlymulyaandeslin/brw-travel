@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Booking;
 use App\Models\BookingSeat;
+use App\Models\CargoBooking;
+use App\Models\CargoPackage;
 use Illuminate\Http\Request;
 use App\Models\TravelPackage;
 use Illuminate\Support\Facades\DB;
@@ -15,21 +17,33 @@ class BookingController extends Controller
     public function index()
     {
         $bookings = Booking::with(["travelPackage.destination", "travelPackage.car", "payment"])->where("user_id", Auth::user()->id)->latest()->get();
+
+        $cargoBookings = CargoBooking::with(["cargoPackage.destination", "cargoPackage.car"])->where("user_id", Auth::user()->id)->latest()->get();
+
         return Inertia::render("Booking/Index", [
-            'bookings' => $bookings
+            'bookings' => $bookings,
+            'cargoBookings' => $cargoBookings,
         ]);
     }
 
-    public function create(TravelPackage $travelPackage)
+    public function create($slug)
     {
-        $travelPackage->load(["destination", "category", "car"]);
+        $travelPackage = TravelPackage::with(["destination", "category", "car"])->where("slug", $slug)->first();
 
-        $bookingSeats = BookingSeat::where("travel_package_id", $travelPackage->id)->get();
+        if ($travelPackage) {
+            $bookingSeats = BookingSeat::where("travel_package_id", $travelPackage->id)->get();
 
-        return Inertia::render("Booking/Create", [
-            'travelPackage' => $travelPackage,
-            "bookingSeats" => $bookingSeats
-        ]);
+            return Inertia::render("Booking/Create", [
+                'travelPackage' => $travelPackage,
+                "bookingSeats" => $bookingSeats,
+            ]);
+        } else {
+            $cargoPackage = CargoPackage::with(["destination", "category", "car"])->where("slug", $slug)->first();
+
+            return Inertia::render("Booking/CargoCreate", [
+                'cargoPackage' => $cargoPackage,
+            ]);
+        }
     }
 
     public function store(Request $request)
@@ -106,5 +120,31 @@ class BookingController extends Controller
             DB::rollBack();
             session()->flash("error", $e->getMessage());
         }
+    }
+
+    public function cargo_store(Request $request)
+    {
+        $tempValue = [
+            "user_id" => Auth::user()->id,
+            "cargo_package_id" => $request->cargo_package_id,
+            "product_name" => $request->product_name,
+            "size" => $request->size,
+            "sender" => $request->sender,
+            "sender_address" => $request->sender_address,
+            "recipient" => $request->recipient,
+            "recipient_address" => $request->recipient_address,
+            "delivery_date" => $request->delivery_date,
+            "notes" => $request->notes,
+            "amount" => $request->amount,
+            "status" => CargoBooking::PENDING,
+        ];
+
+        $cargoPackage = CargoPackage::find($tempValue['cargo_package_id']);
+        $cargoPackage->capacity_gram -= $tempValue['size'];
+        $cargoPackage->save();
+
+        CargoBooking::create($tempValue);
+
+        return redirect()->route("mybooking")->with("success", "Cargo Booking successfully created");
     }
 }
