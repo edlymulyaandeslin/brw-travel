@@ -29,16 +29,17 @@ export default function Register() {
                 <div className="w-full max-w-md space-y-8">
                     <div className="text-center">
                         <h2 className="mt-6 text-3xl font-bold text-gray-900">
-                            Create Your Account
+                            Buat Akun Anda
                         </h2>
                         <p className="mt-2 text-sm text-gray-600">
-                            Join us and start your journey
+                            Bergabunglah dengan kami dan mulailah perjalanan
+                            Anda
                         </p>
                     </div>
 
                     <form onSubmit={submit} className="mt-8 space-y-6">
                         <div>
-                            <InputLabel htmlFor="name" value="Name" />
+                            <InputLabel htmlFor="name" value="Nama" />
                             <TextInput
                                 id="name"
                                 name="name"
@@ -58,7 +59,10 @@ export default function Register() {
                         </div>
 
                         <div>
-                            <InputLabel htmlFor="phone" value="Phone" />
+                            <InputLabel
+                                htmlFor="phone"
+                                value="Nomor Handphone"
+                            />
                             <TextInput
                                 id="phone"
                                 type="number"
@@ -78,7 +82,7 @@ export default function Register() {
                         </div>
 
                         <div>
-                            <InputLabel htmlFor="password" value="Password" />
+                            <InputLabel htmlFor="password" value="Kata Sandi" />
                             <TextInput
                                 id="password"
                                 type="password"
@@ -100,7 +104,7 @@ export default function Register() {
                         <div>
                             <InputLabel
                                 htmlFor="password_confirmation"
-                                value="Confirm Password"
+                                value="Konfirmasi Kata Sandi"
                             />
                             <TextInput
                                 id="password_confirmation"
@@ -129,7 +133,7 @@ export default function Register() {
                                     href={route("login")}
                                     className="font-medium text-blue-600 hover:text-blue-500"
                                 >
-                                    Already registered?
+                                    Sudah terdaftar?
                                 </Link>
                             </div>
 

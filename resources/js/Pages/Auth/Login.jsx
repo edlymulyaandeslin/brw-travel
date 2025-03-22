@@ -29,11 +29,9 @@ export default function Login({ status, canResetPassword }) {
                 <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
                     <div className="text-center">
                         <h2 className="text-3xl font-bold text-gray-900">
-                            Welcome Back
+                            Selamat Datang Kembali
                         </h2>
-                        <p className="mt-2 text-gray-600">
-                            Sign in to your account
-                        </p>
+                        <p className="mt-2 text-gray-600">Masuk ke akun Anda</p>
                     </div>
 
                     {status && (
@@ -44,7 +42,10 @@ export default function Login({ status, canResetPassword }) {
 
                     <form onSubmit={submit} className="space-y-6">
                         <div>
-                            <InputLabel htmlFor="phone" value="Phone" />
+                            <InputLabel
+                                htmlFor="phone"
+                                value="Nomor Handphone"
+                            />
                             <TextInput
                                 id="phone"
                                 type="number"
@@ -64,7 +65,7 @@ export default function Login({ status, canResetPassword }) {
                         </div>
 
                         <div>
-                            <InputLabel htmlFor="password" value="Password" />
+                            <InputLabel htmlFor="password" value="Kata Sandi" />
                             <TextInput
                                 id="password"
                                 type="password"
@@ -92,18 +93,18 @@ export default function Login({ status, canResetPassword }) {
                                     }
                                 />
                                 <span className="ml-2 text-sm text-gray-600">
-                                    Remember me
+                                    Ingat saya
                                 </span>
                             </label>
 
-                            {canResetPassword && (
+                            {/* {canResetPassword && (
                                 <Link
                                     href={route("password.request")}
                                     className="text-sm text-blue-600 hover:text-blue-500"
                                 >
                                     Forgot your password?
                                 </Link>
-                            )}
+                            )} */}
                         </div>
 
                         <div>
@@ -111,19 +112,19 @@ export default function Login({ status, canResetPassword }) {
                                 className="flex justify-center w-full px-4 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                                 disabled={processing}
                             >
-                                {processing ? "Logging in..." : "Log in"}
+                                {processing ? "Sedang masuk..." : "Masuk"}
                             </PrimaryButton>
                         </div>
                     </form>
 
                     <div className="text-center">
                         <p className="text-sm text-gray-600">
-                            Don't have an account?{" "}
+                            Belum punya akun?{" "}
                             <Link
                                 href={route("register")}
                                 className="text-blue-600 hover:text-blue-500"
                             >
-                                Sign up
+                                Daftar
                             </Link>
                         </p>
                     </div>
